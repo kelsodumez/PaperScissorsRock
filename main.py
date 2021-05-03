@@ -17,5 +17,26 @@ db = SQLAlchemy(app) # defines db as sqlalchemy connection to database
 
 '''
 CLASSES FOR DATABASE BELOW
+these tell SQLAlchemy how to take the data from Go.db and make it useable in Python
 '''
+class game(db.Model):
+    __tablename__ = 'game'
+    gameId = db.Column(db.Integer, primary_key=True)
+    user1Id = db.Column(db.ForeignKey('user to game.user'))
+    user2Id = db.Column(db.ForeignKey('user to game.user'))
+    user1Prisoners = db.Column(db.Integer)
+    # add relationship between User1/2Id and UTG
 
+class user(db.Model):
+    __tablename__ = 'user'
+    userId = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String)
+    password = db.Column(db.String)
+    gamesWon = db.Column(db.Integer)
+    gamesLost = db.Column(db.Integer)
+
+class user_to_game(db.Model):
+    __tablename__ = 'user to game'
+    utgId = db.Column(db.Integer, primary_key=True)
+    user = db.Column(db.ForeignKey('user.userId'))
+    game = db.Column(db.ForeignKey('game.'))
