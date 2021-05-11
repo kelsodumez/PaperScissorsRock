@@ -10,13 +10,11 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import DateTime, Column, Integer
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-from models import models
+from config import Config
 
-project_dir = os.path.dirname(os.path.abspath(__file__))
-database_file = (f'sqlite:///{(os.path.join(project_dir, "Go.db"))}')
 app = Flask(__name__)
-app.secret_key = ('visualstudiocodebest') # replace with real secret key
-app.config["SQLALCHEMY_DATABASE_URI"] = database_file
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
+app.config.from_object(Config)
 db = SQLAlchemy(app) # defines db as sqlalchemy connection to database
+import models
+
+#yeah
