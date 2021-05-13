@@ -11,7 +11,7 @@ class game(db.Model):
     user2Id = db.Column(db.ForeignKey('user to game.user'))
     user1Prisoners = db.Column(db.Integer)
 
-class user(db.Model):
+class users(db.Model):
     __tablename__ = 'user'
     userId = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.String)
@@ -28,11 +28,11 @@ class piece(db.Model):
 class user_to_game(db.Model):
     __tablename__ = 'user to game'
     utgId = db.Column(db.Integer, primary_key = True)
-    user = db.Column(db.Integer, db.ForeignKey("user.userId"))
-    game = db.Column(db.Integer, db.ForeignKey("game.gameId"))
+    user = db.Column(db.Integer, db.ForeignKey('user.userId'))
+    game = db.Column(db.Integer, db.ForeignKey('game.gameId'))
 
 class piece_to_game(db.Model):
     __tablename__ = 'piece to game'
     ptgId = db.Column(db.Integer, primary_key = True)
-    piece = db.Column(db.Integer, db.ForeignKey("piece.pieceId"))
-    game = db.Column(db.Integer, db.ForeignKey("game.gameId"))
+    piece = db.Column(db.Integer, db.ForeignKey('piece.pieceId'))
+    game = db.Column(db.Integer, db.ForeignKey('game.gameId'))
