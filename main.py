@@ -23,19 +23,41 @@ import models
 def home():
     return render_template('home.html')
 
-'''
-    def current_user(): # function to create a session for user
-        if session.get("user"):
-            # gotta do the login stuff first for any of this to make sense
 
-    @app.route('/login', methods = ['GET', 'POST'])
-    def login():
-        if session.get('user'):
-            return redirect('/')
+def current_user(): # function to create a session for user
+    if session.get("user"):
+        return models.users.query.get(session['user'])
+    else:
+        return False
 
-    @app.route('/logout')
-    def logout():
-'''
+@app.context_processor
+def add_current_user():
+    if session.get('user'): # if there is user session
+        return dict(current_user = models.users.query.get(session['user']))
+    return dict(current_user = None)
+
+
+@app.route('/login', methods = ['GET', 'POST']) # TODO this should be in a dropwdown eventually but for minimum viable product is fine
+def login():
+    if session.get('user'):
+        return redirect('/')
+    if request.method == 'POST':
+        user = models.users.query.filter(models.users.username == request.form.get('username')).first() # checks the username input against database
+        if user and check_password_hash(user.password, request.form.get('password')):
+            flash('logged in')
+            session['user'] = models.users.userId
+            return redirect ('/')
+        else:
+            return render_template('login.html', error = 'username or password incorrect')
+    return render_template('login.html')
+
+@app.route('/logout')
+def logout():
+    try:
+        session.pop('user')
+    except:
+        return redirect('/login', error = 'not currently logged in')
+    return redirect('/')
 
 @app.route('/createaccount', methods = ['GET', 'POST']) 
 def createaccount():
