@@ -40,16 +40,18 @@ def home():
 @app.route('/createaccount', methods = ['GET', 'POST']) 
 def createaccount():
     if request.method == 'POST':
-        if len(request.form.get('username')) > 12: # if the length of the inputted username is greater than 12 characters
-            return render_template('createaccount.html', error = 'username exceeds the limit of 12 characters') # account will not be created with said username and user is prompted to input a shorter username     
+        if 5 > len(request.form.get('username')) > 12: # if the length of the inputted username is lesser than 5 and greater than 12 (characters)
+            return render_template('createaccount.html', error = 'username must be between 5 and 12 characters') # account will not be created with said username and user is prompted to input a shorter/longer username     
         elif models.users.query.filter(models.users.username == request.form.get('username')).first(): # if the username already exists in the db
             return render_template('createaccount.html', error = 'username already in use') # account will not be created and user is prompted to use a different username
+        elif len(request.form.get('password')) < 7: #
+            return render_template('createaccount.html', error = 'password must be a minimum of 7 characters') 
         else:
             user_info = models.users (
                 username = request.form.get('username'), # takes username from form
                 password = generate_password_hash(request.form.get('password'), salt_length = 10), # takes password inputted in form and salts and hashes it for encryption
-                gamesWon = 0, gamesLost = 0
-            )
+                gamesWon = 0, gamesLost = 0 
+                )
             db.session.add(user_info)
             db.session.commit()
     return render_template('createaccount.html')
