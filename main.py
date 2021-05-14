@@ -13,11 +13,11 @@ from datetime import datetime
 
 from config import Config
 
-db = SQLAlchemy()
 app = Flask(__name__)
 app.config.from_object(Config)
-db = SQLAlchemy() # defines db as sqlalchemy connection to database
+db = SQLAlchemy(app) # defines db as sqlalchemy connection to database
 
+import models
 from models import game, users, piece, user_to_game, piece_to_game
 
 db.init_app(app) 
