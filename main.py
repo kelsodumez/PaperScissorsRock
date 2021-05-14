@@ -18,9 +18,6 @@ app.config.from_object(Config)
 db = SQLAlchemy(app) # defines db as sqlalchemy connection to database
 
 import models
-from models import game, users, piece, user_to_game, piece_to_game
-
-db.init_app(app) 
 
 @app.route('/')
 def home():
@@ -45,10 +42,10 @@ def createaccount():
     if request.method == 'POST':
         if len(request.form.get('username')) > 12: # if the length of the inputted username is greater than 12 characters
             return render_template('createaccount.html', error = 'username exceeds the limit of 12 characters') # account will not be created with said username and user is prompted to input a shorter username     
-        elif users.query.filter(users.username == request.form.get('username')).first(): # if the username already exists in the db
+        elif models.users.query.filter(models.users.username == request.form.get('username')).first(): # if the username already exists in the db
             return render_template('createaccount.html', error = 'username already in use') # account will not be created and user is prompted to use a different username
         else:
-            user_info = users (
+            user_info = models.users (
                 username = request.form.get('username'), # takes username from form
                 password = generate_password_hash(request.form.get('password'), salt_length = 10), # takes password inputted in form and salts and hashes it for encryption
                 gamesWon = 0, gamesLost = 0
