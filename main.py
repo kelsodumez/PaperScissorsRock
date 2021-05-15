@@ -10,7 +10,6 @@ from sqlalchemy import DateTime, Column, Integer
 import sqlalchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
-
 from config import Config
 
 app = Flask(__name__)
@@ -22,7 +21,6 @@ import models
 @app.route('/')
 def home():
     return render_template('home.html')
-
 
 def current_user(): # function to create a session for user
     if session.get("user"):
