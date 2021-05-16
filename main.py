@@ -42,7 +42,6 @@ def login():
     if request.method == 'POST':
         user = models.users.query.filter(models.users.username == request.form.get('username')).first() # checks the username input against database
         if user and check_password_hash(user.password, request.form.get('password')):
-            flash('logged in')
             session['user'] = user.userId
             return redirect ('/')
         else:
