@@ -4,21 +4,15 @@
 
 <!DOCTYPE html>
 <html lang = 'en'>
-
 <head>
     <meta charset="UTF-8">
     <meta name = 'viewport' content = 'width=device-width, initial scale 1.0'>
     <meta http-equiv="X-UA-Compatible" content = 'ie=edge'>
     <title>go</title>
-    
-
     <link rel = 'stylesheet' href = '/static/style.css'>
-
 </head>
-
 <body>
     <h1>go</h1>
-
     <div class = 'navbar' id = 'topnav'>
         {{ nav_item('Home', '/') }}
         {{ nav_item('Create Account', '/createaccount') }}
@@ -29,18 +23,14 @@
         {{ nav_item('Login', '/login') }}
         {% endif %}
     </div>
-
     <div>
         {% for message in get_flashed_messages() %}
             {{message}}
         {% endfor %}
     </div>
-
     <div class="content">
         {% block body %}
         {% endblock body %}
     </div>
-    
 </body>
-
 </html>

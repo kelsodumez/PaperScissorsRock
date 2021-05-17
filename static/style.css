@@ -1,0 +1,15 @@
+:root {
+    --c1: #7b9c98;
+    --c2: #eaf1f3; 
+    --c3: #495755;
+    --c4: 'Roboto Mono'
+}
+
+html {
+    font-family: var(--c4);
+}
+
+body {
+
+    background-color: #7b9c98;
+}
