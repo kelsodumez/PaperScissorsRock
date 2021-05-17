@@ -74,16 +74,32 @@ def createaccount():
             db.session.add(user_info)
             db.session.commit()
     return render_template('createaccount.html')
-    
 '''
-    @app.route('/game/<int:gameId>')
+@app.route('/createlobby', methods = ['GET', 'POST'])
+def createlobby():
+    if request.method == 'POST':
+        game_info = models.game (
+            gameName = request.form.get('lobbyname')
+        )
+        db.session.add(game_info)
+        db.session.commit()
 
-    @app.route('/selectgame')
+        utg_info = models.user_to_game (
+            user = current_user.username()
+            game = 
+        )
+        return render_template('selectgame.html')
+'''
 
+
+'''
     @app.route('/leaderboard')
 
-    @app.route('/createaccount')
+    @app.route('/game/<int:gameId>')
 '''
 
+
+
 if __name__ == "__main__": 
+    #db.create_all()
     app.run(debug=True) # runs with debug active so i can tell how bad my code is

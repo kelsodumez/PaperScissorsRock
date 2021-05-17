@@ -7,9 +7,11 @@ from main import db
 class game(db.Model):
     __tablename__ = 'game'
     gameId = db.Column(db.Integer, primary_key = True)
+    gameName = db.Column(db.String)
     user1Id = db.Column(db.ForeignKey('user to game.user'))
     user2Id = db.Column(db.ForeignKey('user to game.user'))
     user1Prisoners = db.Column(db.Integer)
+    user2Prisoners = db.Column(db.Integer)
 
 class users(db.Model):
     __tablename__ = 'user'

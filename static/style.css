@@ -1,3 +1,6 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@1,300&display=swap');
+
+
 :root {
     --c1: #7b9c98;
     --c2: #eaf1f3; 
@@ -5,11 +8,19 @@
     --c4: 'Roboto Mono'
 }
 
+.navbar {
+    background-color: var(--c3)s;
+}
+
 html {
     font-family: var(--c4);
+    color: var(--c2);
+}
+
+a {
+    color: var(--c2)
 }
 
 body {
-
     background-color: #7b9c98;
 }
