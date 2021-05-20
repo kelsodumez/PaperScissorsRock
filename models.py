@@ -38,3 +38,4 @@ class piece_to_game(db.Model):
     ptgId = db.Column(db.Integer, primary_key = True)
     piece = db.Column(db.Integer, db.ForeignKey('piece.pieceId'))
     game = db.Column(db.Integer, db.ForeignKey('game.gameId'))
+

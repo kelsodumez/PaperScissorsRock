@@ -9,7 +9,7 @@
 }
 
 .navbar {
-    background-color: var(--c3)s;
+    background-color: var(--c3);
 }
 
 html {
@@ -22,5 +22,5 @@ a {
 }
 
 body {
-    background-color: #7b9c98;
+    background-color: var(--c1);
 }

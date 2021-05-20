@@ -18,6 +18,8 @@ db = SQLAlchemy(app) # defines db as sqlalchemy connection to database
 
 import models
 
+#db.create_all()
+
 @app.route('/')
 def home():
     return render_template('home.html')
@@ -74,7 +76,7 @@ def createaccount():
             db.session.add(user_info)
             db.session.commit()
     return render_template('createaccount.html')
-'''
+
 @app.route('/createlobby', methods = ['GET', 'POST'])
 def createlobby():
     if request.method == 'POST':
@@ -83,13 +85,13 @@ def createlobby():
         )
         db.session.add(game_info)
         db.session.commit()
-
         utg_info = models.user_to_game (
-            user = current_user.username()
-            game = 
+            user = current_user().username,
+            game = models.game.query.filter(models.game.gameName == request.form.get('lobbyname')).first().gameId
         )
-        return render_template('selectgame.html')
-'''
+        db.session.add(utg_info)
+        db.session.commit()
+    return render_template('selectgame.html')
 
 
 '''
@@ -101,5 +103,4 @@ def createlobby():
 
 
 if __name__ == "__main__": 
-    #db.create_all()
     app.run(debug=True) # runs with debug active so i can tell how bad my code is
