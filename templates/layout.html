@@ -15,6 +15,7 @@
     <h1>go</h1>
     <div class = 'navbar' id = 'topnav'>
         {{ nav_item('Home', '/') }}
+        {{ nav_item('Play', '/createlobby')}}
         {{ nav_item('Create Account', '/createaccount') }}
         {% if current_user %}
             {{('Logged in as {}'.format(current_user.username)) }}
