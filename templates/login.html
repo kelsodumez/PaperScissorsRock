@@ -2,7 +2,7 @@
 {% extends 'layout.html' %}
 {% block body %}
 <desc>{{ error }}</desc>
-<form method = 'Post' name = 'Login'>
+<form method = 'Post' action= '/login' name = 'Login'>
     <input type = 'text' name = 'username' placeholder = 'username'>
     <input type = 'password' name = 'password' placeholder = 'password'>
     <input type = 'submit' class = 'button' value = 'login'>

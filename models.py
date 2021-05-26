@@ -8,8 +8,6 @@ class game(db.Model):
     __tablename__ = 'game'
     gameId = db.Column(db.Integer, primary_key = True)
     gameName = db.Column(db.String)
-    user1Id = db.Column(db.ForeignKey('user to game.user'))
-    user2Id = db.Column(db.ForeignKey('user to game.user'))
     user1Prisoners = db.Column(db.Integer)
     user2Prisoners = db.Column(db.Integer)
 
@@ -32,6 +30,7 @@ class user_to_game(db.Model):
     utgId = db.Column(db.Integer, primary_key = True)
     user = db.Column(db.Integer, db.ForeignKey('user.userId'))
     game = db.Column(db.Integer, db.ForeignKey('game.gameId'))
+    isPlayerOne = db.Column(db.Boolean)
 
 class piece_to_game(db.Model):
     __tablename__ = 'piece to game'

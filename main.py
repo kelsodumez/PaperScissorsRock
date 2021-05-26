@@ -18,7 +18,7 @@ db = SQLAlchemy(app) # defines db as sqlalchemy connection to database
 
 import models
 
-#db.create_all()
+db.create_all()
 
 @app.route('/')
 def home():
