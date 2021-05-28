@@ -6,6 +6,11 @@
     <input type = 'submit' class = 'button' value = 'createlobby'>
     <!-- perhaps add the ability to add a password to lobby later on -->
 </form>
+
+
+
+{% else %}
+{{'must be logged in'}}
 {% endif %}
 {% endblock body %}
 

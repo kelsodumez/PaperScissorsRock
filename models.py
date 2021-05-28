@@ -38,3 +38,4 @@ class piece_to_game(db.Model):
     piece = db.Column(db.Integer, db.ForeignKey('piece.pieceId'))
     game = db.Column(db.Integer, db.ForeignKey('game.gameId'))
 
+#db.create_all(extend_existing=True)
