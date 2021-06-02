@@ -77,6 +77,7 @@ def createaccount():
 
 @app.route('/createlobby', methods = ['GET', 'POST'])
 def createlobby():
+    games=models.game.query.all()
     if request.method == 'POST':
         game_info = models.game (
             gameName = request.form.get('lobbyname')
@@ -90,14 +91,14 @@ def createlobby():
         )
         db.session.add(utg_info)
         db.session.commit()
-    return render_template('selectgame.html')
-
-
+    return render_template('selectgame.html', games=games)
 '''
-    @app.route('/leaderboard')
-
-    @app.route('/game/<int:gameId>')
+@app.route('/leaderboard')
 '''
+@app.route('/game/<int:gameId>')
+def game(gameId):
+    game=models.game.query.get(gameId)
+    return render_template('game.html', game=game)
 
 if __name__ == "__main__": 
     app.run(debug=True) # runs with debug active so i can tell how bad my code is

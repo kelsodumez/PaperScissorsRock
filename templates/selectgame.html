@@ -7,7 +7,22 @@
     <!-- perhaps add the ability to add a password to lobby later on -->
 </form>
 
+<table>
 
+    <tr>
+        <th>Name</th>
+        <th>User Created</th>
+    </tr>
+
+{% for game in games %}
+
+<tr>
+    <td><a href="/game/{{ game.gameId }}">{{game.gameName}}</a></td>  
+</tr>
+
+{% endfor %}
+
+</table> 
 
 {% else %}
 {{'must be logged in'}}
