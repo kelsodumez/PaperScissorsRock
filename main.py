@@ -75,8 +75,8 @@ def createaccount():
             db.session.commit()
     return render_template('createaccount.html')
 
-@app.route('/createlobby', methods = ['GET', 'POST'])
-def createlobby():
+@app.route('/lobbies', methods = ['GET', 'POST'])
+def lobbies():
     games=models.game.query.all()
     if request.method == 'POST':
         game_info = models.game (
@@ -91,7 +91,7 @@ def createlobby():
         )
         db.session.add(utg_info)
         db.session.commit()
-    return render_template('selectgame.html', games=games)
+    return render_template('lobbies.html', games=games)
 '''
 @app.route('/leaderboard')
 '''

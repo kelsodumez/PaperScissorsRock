@@ -17,7 +17,7 @@
 {% for game in games %}
 
 <tr>
-    <td><a href="/game/{{ game.gameId }}">{{game.gameName}}</a></td>  
+    <td><a href="/game/{{ game.gameId }}" onclick="return confirm('are you sure?')">{{game.gameName}}</a></td>  
 </tr>
 
 {% endfor %}
