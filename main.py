@@ -82,21 +82,30 @@ def lobbies():
         game_info = models.game (
             gameName = request.form.get('lobbyname')
         )
-        db.session.add(game_info)
-        db.session.commit()
-        utg_info = models.user_to_game (
-            user = current_user().username,
-            game = models.game.query.filter(models.game.gameName == request.form.get('lobbyname')).first().gameId,
-            isPlayerOne = True
-        )
-        db.session.add(utg_info)
-        db.session.commit()
+        if game_info.gameName != models.game.query.first():            
+            db.session.add(game_info)
+            db.session.commit()
+            
+            utg_info = models.user_to_game (
+                user = current_user().username,
+                game = models.game.query.filter(models.game.gameName == request.form.get('lobbyname')).first().gameId,
+                isPlayerOne = True
+            )
+            db.session.add(utg_info)
+            db.session.commit()
     return render_template('lobbies.html', games=games)
 '''
 @app.route('/leaderboard')
 '''
 @app.route('/game/<int:gameId>')
 def game(gameId):
+    utg_info = models.user_to_game (
+        user = current_user().username,
+        game = gameId,
+        isPlayerOne = False
+    )
+    db.session.add(utg_info)
+    db.session.commit()
     game=models.game.query.get(gameId)
     return render_template('game.html', game=game)
 
