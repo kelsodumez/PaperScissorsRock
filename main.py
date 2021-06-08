@@ -2,6 +2,8 @@
 Kelso du Mez
 3/05/2021 - (date when finished)
 SQLAlchemy Go Website (hopefully)
+git config --global user.email "17232@burnside.school.nz" 
+git config --global user.name "kelsodumez"
 '''
 from flask import Flask, render_template, session, redirect, url_for, request, Blueprint, flash
 from random import randint, choice
