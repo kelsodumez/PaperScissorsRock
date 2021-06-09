@@ -80,22 +80,25 @@ def createaccount():
 @app.route('/lobbies', methods = ['GET', 'POST'])
 def lobbies():
     games=models.game.query.all()
+    return render_template('lobbies.html', games=games)
+
+@app.route('/createlobby', methods = ['GET', 'POST'])
+def create_lobby():
     if request.method == 'POST':
         game_info = models.game (
             gameName = request.form.get('lobbyname')
         )
-        if game_info.gameName != models.game.query.first():            
-            db.session.add(game_info)
-            db.session.commit()
-            
-            utg_info = models.user_to_game (
-                user = current_user().username,
-                game = models.game.query.filter(models.game.gameName == request.form.get('lobbyname')).first().gameId,
-                isPlayerOne = True
-            )
-            db.session.add(utg_info)
-            db.session.commit()
-    return render_template('lobbies.html', games=games)
+        db.session.add(game_info)
+        db.session.commit()
+        
+        utg_info = models.user_to_game (
+            user = current_user().username,
+            game = models.game.query.filter(models.game.gameName == request.form.get('lobbyname')).first().gameId,
+            isPlayerOne = True
+        )
+        db.session.add(utg_info)
+        db.session.commit()    
+    return redirect('lobbies')
 '''
 @app.route('/leaderboard')
 '''
@@ -109,6 +112,7 @@ def game(gameId):
     db.session.add(utg_info)
     db.session.commit()
     game=models.game.query.get(gameId)
+    
     return render_template('game.html', game=game)
 
 if __name__ == "__main__": 

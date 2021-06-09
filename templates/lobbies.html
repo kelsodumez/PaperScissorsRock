@@ -1,7 +1,7 @@
 {% extends 'layout.html' %}
 {% block body %}
 {% if session.get('user') %}
-<form method='POST' name = 'createlobby' action='/lobbies'>
+<form method='POST' name = 'createlobby' action='/createlobby'>
     <input type = 'text' name = 'lobbyname' placeholder = 'lobby name'>
     <input type = 'submit' class = 'button' value = 'createlobby'>
     <!-- perhaps add the ability to add a password to lobby later on -->
@@ -18,6 +18,7 @@
 
 <tr>
     <td><a href="/game/{{ game.gameId }}" onclick="return confirm('are you sure?')">{{game.gameName}}</a></td>  
+    
 </tr>
 
 {% endfor %}
