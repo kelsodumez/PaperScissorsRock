@@ -80,7 +80,8 @@ def createaccount():
 @app.route('/lobbies', methods = ['GET', 'POST'])
 def lobbies():
     games=models.game.query.all()
-    return render_template('lobbies.html', games=games)
+    users=models.user_to_game.query.all()
+    return render_template('lobbies.html', games=games, users=users)
 
 @app.route('/createlobby', methods = ['GET', 'POST'])
 def create_lobby():
@@ -92,7 +93,7 @@ def create_lobby():
         db.session.commit()
         
         utg_info = models.user_to_game (
-            user = current_user().username,
+            username = current_user().username,
             game = models.game.query.filter(models.game.gameName == request.form.get('lobbyname')).first().gameId,
             isPlayerOne = True
         )
@@ -105,7 +106,7 @@ def create_lobby():
 @app.route('/game/<int:gameId>')
 def game(gameId):
     utg_info = models.user_to_game (
-        user = current_user().username,
+        username = current_user().username,
         game = gameId,
         isPlayerOne = False
     )

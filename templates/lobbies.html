@@ -12,18 +12,28 @@
     <tr>
         <th>Name</th>
         <th>User Created</th>
+        <th>Is Full</th> <!-- make this read less psychopathically-->
     </tr>
 
 {% for game in games %}
 
 <tr>
-    <td><a href="/game/{{ game.gameId }}" onclick="return confirm('are you sure?')">{{game.gameName}}</a></td>  
-    
-</tr>
+    <td><a href="/game/{{ game.gameId }}" onclick="return confirm('are you sure?')">{{game.gameName}}</a></td> 
 
+{% for user in users %}
+{% if user.game == game.gameId %}
+    {% if user.isPlayerOne == True %}
+        <td>{{user.username}}</td>
+    {% endif %}
+{% endif %}
+{% endfor %}
 {% endfor %}
 
+{%  %}
+
+</tr>
 </table> 
+
 
 {% else %}
 {{'must be logged in'}}

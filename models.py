@@ -28,7 +28,7 @@ class piece(db.Model):
 class user_to_game(db.Model):
     __tablename__ = 'user to game'
     utgId = db.Column(db.Integer, primary_key = True)
-    user = db.Column(db.Integer, db.ForeignKey('user.userId'))
+    username = db.Column(db.Integer, db.ForeignKey('user.userId'))
     game = db.Column(db.Integer, db.ForeignKey('game.gameId'))
     isPlayerOne = db.Column(db.Boolean)
 
