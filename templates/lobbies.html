@@ -1,6 +1,7 @@
 {% extends 'layout.html' %}
 {% block body %}
 {% if session.get('user') %}
+<desc>{{ error }}</desc>
 <form method='POST' name = 'createlobby' action='/createlobby'>
     <input type = 'text' name = 'lobbyname' placeholder = 'lobby name'>
     <input type = 'submit' class = 'button' value = 'createlobby'>
@@ -12,11 +13,9 @@
     <tr>
         <th>Name</th>
         <th>User Created</th>
-        <th>Is Full</th> <!-- make this read less psychopathically-->
     </tr>
 
 {% for game in games %}
-
 <tr>
     <td><a href="/game/{{ game.gameId }}" onclick="return confirm('are you sure?')">{{game.gameName}}</a></td> 
 
@@ -29,11 +28,8 @@
 {% endfor %}
 {% endfor %}
 
-{%  %}
-
 </tr>
 </table> 
-
 
 {% else %}
 {{'must be logged in'}}

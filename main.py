@@ -86,20 +86,27 @@ def lobbies():
 @app.route('/createlobby', methods = ['GET', 'POST'])
 def create_lobby():
     if request.method == 'POST':
-        game_info = models.game (
-            gameName = request.form.get('lobbyname')
-        )
-        db.session.add(game_info)
-        db.session.commit()
-        
-        utg_info = models.user_to_game (
-            username = current_user().username,
-            game = models.game.query.filter(models.game.gameName == request.form.get('lobbyname')).first().gameId,
-            isPlayerOne = True
-        )
-        db.session.add(utg_info)
-        db.session.commit()    
-    return redirect('lobbies')
+        if len(request.form.get('lobbyname')) > 20:
+            flash('name of lobby must be less than 20 characters')
+            return redirect('lobbies')
+        elif models.game.query.filter(models.game.gameName == request.form.get('lobbyname')).first():
+            flash('that lobby name already exists')
+            return redirect('lobbies')
+        else:
+            game_info = models.game (
+                gameName = request.form.get('lobbyname')
+            )
+            db.session.add(game_info)
+            db.session.commit()
+            
+            utg_info = models.user_to_game (
+                username = current_user().username,
+                game = models.game.query.filter(models.game.gameName == request.form.get('lobbyname')).first().gameId,
+                isPlayerOne = True
+            )
+            db.session.add(utg_info)
+            db.session.commit()    
+            return redirect('lobbies')
 '''
 @app.route('/leaderboard')
 '''
