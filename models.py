@@ -10,6 +10,7 @@ class game(db.Model):
     gameName = db.Column(db.String)
     user1Prisoners = db.Column(db.Integer)
     user2Prisoners = db.Column(db.Integer)
+    userNo = db.Column(db.Integer)
 
 class users(db.Model):
     __tablename__ = 'user'

@@ -94,7 +94,8 @@ def create_lobby():
             return redirect('lobbies')
         else:
             game_info = models.game (
-                gameName = request.form.get('lobbyname')
+                gameName = request.form.get('lobbyname'),
+                userNo = 1
             )
             db.session.add(game_info)
             db.session.commit()
@@ -112,6 +113,9 @@ def create_lobby():
 '''
 @app.route('/game/<int:gameId>')
 def game(gameId):
+    game_info = models.game.query.filter_by(models.game.gameId == gameId)
+    game_info.userNo += 1
+    db.session.commit()
     utg_info = models.user_to_game (
         username = current_user().username,
         game = gameId,
@@ -119,8 +123,7 @@ def game(gameId):
     )
     db.session.add(utg_info)
     db.session.commit()
-    game=models.game.query.get(gameId)
-    
+    game = models.game.query.get(gameId)    
     return render_template('game.html', game=game)
 
 if __name__ == "__main__": 

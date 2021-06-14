@@ -18,7 +18,6 @@
 {% for game in games %}
 <tr>
     <td><a href="/game/{{ game.gameId }}" onclick="return confirm('are you sure?')">{{game.gameName}}</a></td> 
-
 {% for user in users %}
 {% if user.game == game.gameId %}
     {% if user.isPlayerOne == True %}
