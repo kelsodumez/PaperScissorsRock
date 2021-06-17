@@ -82,7 +82,7 @@ def createaccount():
 def lobbies():
     games=models.game.query.all()
     users=models.user_to_game.query.all()
-    return render_template('lobbies.html', games=games, users=users)
+    return render_template('lobbies.html', games=games, users=users, backcheck=True)
 
 @app.route('/createlobby', methods = ['GET', 'POST'])
 def create_lobby():

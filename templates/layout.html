@@ -1,5 +1,6 @@
 {% macro nav_item(text, url, extra_class) %}
 <a href="{{ url }}" class="{{ extra_class }} {% if request.path == url %}active{% endif %}">{{ text }}</a>
+{% if backcheck %}<script src="/static/js/backbuttonreload.js" type="text/javascript"></script>{% endif %}
 {% endmacro %}
 
 <!DOCTYPE html>

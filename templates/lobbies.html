@@ -13,7 +13,7 @@
     <tr>
         <th>Name</th>
         <th>User Created</th>
-        <th>Space Available</th>
+        <th>Space</th>
     </tr>
 
 {% for game in games %}
@@ -30,6 +30,11 @@
     {% endif %}
 {% endif %}
 {% endfor %}
+{% if game.userNo < 2 %}
+    <td>1/2</td>
+{% else %}
+    <td>2/2</td>
+{% endif %}
 {% endfor %}
 
 </tr>
