@@ -17,6 +17,7 @@ from config import Config
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app) # defines db as sqlalchemy connection to database
+from main import db
 
 import models
 
@@ -112,10 +113,9 @@ def create_lobby():
 '''
 @app.route('/game/<int:gameId>')
 def game(gameId):
-    game_info = models.game.query.filter_by(gameId = gameId).first()
-    print("kelso", game_info)
-    game_info.userNo = game_info.userNo + 1
-    db.session.add(game_info)
+    increase_userNo = models.game.query.filter_by(gameId = gameId).first()
+    increase_userNo.userNo = increase_userNo.userNo + 1
+    db.session.add(increase_userNo)
     db.session.commit()
     utg_info = models.user_to_game (
         username = current_user().username,

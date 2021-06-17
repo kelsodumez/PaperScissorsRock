@@ -13,11 +13,16 @@
     <tr>
         <th>Name</th>
         <th>User Created</th>
+        <th>Space Available</th>
     </tr>
 
 {% for game in games %}
 <tr>
+{% if game.userNo < 2 %}
     <td><a href="/game/{{ game.gameId }}" onclick="return confirm('are you sure?')">{{game.gameName}}</a></td> 
+{% else %}
+    <td>{{game.gameName}}</td>
+{% endif %}
 {% for user in users %}
 {% if user.game == game.gameId %}
     {% if user.isPlayerOne == True %}
