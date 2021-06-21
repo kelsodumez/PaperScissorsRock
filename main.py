@@ -56,7 +56,7 @@ def logout():
     try:
         session.pop('user')
     except:
-        return redirect('/login', error = 'not currently logged in')
+        return redirect('login', error = 'not currently logged in')
     return redirect('/')
 
 @app.route('/createaccount', methods = ['GET', 'POST']) 
@@ -107,7 +107,7 @@ def create_lobby():
             )
             db.session.add(utg_info)
             db.session.commit()    
-            return redirect('lobbies')
+            return redirect(f'/game/{game_info.gameId}')
 '''
 @app.route('/leaderboard')
 '''

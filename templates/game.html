@@ -2,5 +2,23 @@
 {% block body %}
 
 <h1> {{ game.gameName }}</h1>
+<!-- <script>
+    window.addEventListener('beforeunload', function(e) {
+        // cancel event
+        e.preventDefault();
+        e.returnValue = '';
+</script> -->
 
+<script type="text/javascript">
+    function myfun(){
+     // Write your business logic here
+     console.log('hello');
+    }
+
+    window.onbeforeunload = function(){
+    myfun();
+    return 'Are you sure you want to leave?';
+    };
+    
+    </script>
 {% endblock body %}
