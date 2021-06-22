@@ -8,12 +8,12 @@
     <!-- perhaps add the ability to add a password to lobby later on -->
 </form>
 <table>
-
-    <tr>
-        <th>Name</th>
-        <th>User Created</th>
-        <th>Space</th>
-    </tr>
+<caption>Public Lobbies</caption>
+<tr>
+    <th>Name</th>
+    <th>User Created</th>
+    <th>Space</th>
+</tr>
 
 {% for game in games %}
 <tr>
@@ -38,9 +38,27 @@
 
 </tr>
 </table> 
-
 {% else %}
 {{'must be logged in'}}
 {% endif %}
 {% endblock body %}
+
+<table>
+<caption>Your Lobbies</caption>
+<tr>
+    <th>Name</th>
+    <th>User Created</th>
+    <th>Space</th>
+</tr>
+<tr>
+
+{% for user in users %}
+    {% if current_user.username == user.username %}
+    {{ user.username }}
+    {% endif %}
+        <!-- <td><a href="/game/{{ game.gameId }}" onclick="return confirm('are you sure?')">{{game.gameName}}</a></td>  -->
+{% endfor %}
+
+</tr>
+</table>
 
