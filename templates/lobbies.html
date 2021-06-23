@@ -7,58 +7,59 @@
     <input type = 'submit' class = 'button' value = 'createlobby'>
     <!-- perhaps add the ability to add a password to lobby later on -->
 </form>
-<table>
-<caption>Public Lobbies</caption>
-<tr>
-    <th>Name</th>
-    <th>User Created</th>
-    <th>Space</th>
-</tr>
+<table width = 25%>
+    <caption>Public Lobbies</caption>
+    <tr>
+        <th>Name</th>
+        <th>User Created</th>
+        <th>Space</th>
+    </tr>
 
-{% for game in games %}
-<tr>
-{% if game.userNo < 2 %}
-    <td><a href="/game/{{ game.gameId }}" onclick="return confirm('are you sure?')">{{game.gameName}}</a></td> 
-{% else %}
-    <td>{{game.gameName}}</td>
-{% endif %}
-{% for user in users %}
-{% if user.game == game.gameId %}
-    {% if user.isPlayerOne == True %}
-        <td>{{user.username}}</td>
+    {% for game in games %}
+    <tr>
+    {% if game.userNo < 2 %}
+        <td><a href="/game/{{ game.gameId }}" onclick="return confirm('are you sure?')">{{game.gameName}}</a></td> 
+    {% else %}
+        <td>{{game.gameName}}</td>
     {% endif %}
-{% endif %}
-{% endfor %}
-{% if game.userNo < 2 %}
-    <td>1/2</td>
-{% else %}
-    <td>2/2</td>
-{% endif %}
-{% endfor %}
+    {% for user in users %}
+    {% if user.game == game.gameId %}
+        {% if user.isPlayerOne == True %}
+            <td>{{user.username}}</td>
+        {% endif %}
+    {% endif %}
+    {% endfor %}
+    {% if game.userNo < 2 %}
+        <td>1/2</td>
+    {% else %}
+        <td>2/2</td>
+    {% endif %}
+    {% endfor %}
 
-</tr>
+    </tr>
 </table> 
 {% else %}
 {{'must be logged in'}}
 {% endif %}
 {% endblock body %}
 
-<table>
-<caption>Your Lobbies</caption>
-<tr>
-    <th>Name</th>
-    <th>User Created</th>
-    <th>Space</th>
-</tr>
-<tr>
+<table width = 25%>
+    <caption>Your Lobbies</caption>
+    <tr>
+        <th>Name</th>
+        <th>User Created</th>
+        <th>Space</th>
+    </tr>
+    <tr>
+        <td>1</td>
+        {% for user in users %}
+        https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_table_side_by_side&stacked=h
+        {% if current_user.username == user.username %}
+        <td>{{ user.username }}</td>
+        {% endif %}
+            <!-- <td><a href="/game/{{ game.gameId }}" onclick="return confirm('are you sure?')">{{game.gameName}}</a></td>  -->
+    {% endfor %}
 
-{% for user in users %}
-    {% if current_user.username == user.username %}
-    {{ user.username }}
-    {% endif %}
-        <!-- <td><a href="/game/{{ game.gameId }}" onclick="return confirm('are you sure?')">{{game.gameName}}</a></td>  -->
-{% endfor %}
-
-</tr>
+    </tr>
 </table>
 
