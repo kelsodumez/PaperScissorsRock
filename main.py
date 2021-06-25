@@ -114,6 +114,7 @@ def create_lobby():
 @app.route('/game/<int:gameId>')
 def game(gameId):
     increase_userNo = models.game.query.filter_by(gameId = gameId).first()
+    # TODO if user that created game is redirected to do not increase userNo
     increase_userNo.userNo = increase_userNo.userNo + 1
     db.session.add(increase_userNo)
     db.session.commit()
