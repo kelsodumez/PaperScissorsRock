@@ -113,20 +113,23 @@ def create_lobby():
 '''
 @app.route('/game/<int:gameId>')
 def game(gameId):
-    increase_userNo = models.game.query.filter_by(gameId = gameId).first()
-    # TODO if user that created game is redirected to do not increase userNo
-    increase_userNo.userNo = increase_userNo.userNo + 1
-    db.session.add(increase_userNo)
-    db.session.commit()
-    utg_info = models.user_to_game (
-        username = current_user().username,
-        game = gameId,
-        isPlayerOne = False
-    )
-    db.session.add(utg_info)
-    db.session.commit()
-    game = models.game.query.get(gameId)    
-    return render_template('game.html', game=game)
+    increase_userNo = models.game.query.filter_by(gameId = gameId).first()    
+    userCreated = models.user_to_game.query.filter_by(game = gameId).first()
+    game = models.game.query.get(gameId)   
+    if current_user().username == userCreated.username:
+        return render_template('game.html', game=game)
+    else:
+        increase_userNo.userNo = increase_userNo.userNo + 1
+        db.session.add(increase_userNo)
+        db.session.commit()
+        utg_info = models.user_to_game (
+            username = current_user().username,
+            game = gameId,
+            isPlayerOne = False
+        )
+        db.session.add(utg_info)
+        db.session.commit() 
+        return render_template('game.html', game=game)
 
 if __name__ == "__main__": 
     app.run(debug=True) # runs with debug active so i can tell how bad my code is

@@ -46,24 +46,12 @@
     {% endblock body %}
     </div>
     <div class="column">
-    <table>
-        <caption>Your Lobbies</caption>
-        <tr>
-            <th>Name</th>
-            <th>User Created</th>
-            <th>Space</th>
-        </tr>
-        <tr>
-            <td>test</td>
-            <td>test</td>
-            {% for user in users %}
-            https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_table_side_by_side&stacked=h
-            {% if current_user.username == user.username %}
-            <td>{{ user.username }}</td>
-            {% endif %}
-                <!-- <td><a href="/game/{{ game.gameId }}" onclick="return confirm('are you sure?')">{{game.gameName}}</a></td>  -->
-        {% endfor %}
-        </tr>
-    </table>
+        <table>
+            <tr>
+                <th>Name</th>
+                <th>User Created</th>
+                <th>Space</th>
+            </tr>
+        </table>
     </div>
 </div>

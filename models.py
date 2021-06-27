@@ -27,14 +27,14 @@ class piece(db.Model):
     coordY = db.Column(db.Integer)
 
 class user_to_game(db.Model):
-    __tablename__ = 'user to game'
+    __tablename__ = 'user_to_game'
     utgId = db.Column(db.Integer, primary_key = True)
     username = db.Column(db.Integer, db.ForeignKey('user.userId'))
     game = db.Column(db.Integer, db.ForeignKey('game.gameId'))
     isPlayerOne = db.Column(db.Boolean)
 
 class piece_to_game(db.Model):
-    __tablename__ = 'piece to game'
+    __tablename__ = 'piece_to_game'
     ptgId = db.Column(db.Integer, primary_key = True)
     piece = db.Column(db.Integer, db.ForeignKey('piece.pieceId'))
     game = db.Column(db.Integer, db.ForeignKey('game.gameId'))
