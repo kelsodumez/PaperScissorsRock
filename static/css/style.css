@@ -32,9 +32,17 @@ margin-right:-5px;
 }
 
 .column {
-float: left;
-width: 50%;
-padding: 5px;
+width: 25%;
+padding: 1px;
+overflow-y: auto;
+}
+
+.column:nth-child(odd){
+    float: left;
+}
+
+.column:nth-child(even){
+    float: left;
 }
 
 /* Clearfix (clear floats) */
