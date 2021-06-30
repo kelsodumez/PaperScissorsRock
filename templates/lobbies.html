@@ -5,7 +5,7 @@
 <form method='POST' name = 'createlobby' action='/createlobby'>
     <input type = 'text' name = 'lobbyname' placeholder = 'lobby name'>
     <input type = 'submit' class = 'button' value = 'createlobby'>
-    <!-- perhaps add the ability to add a password to lobby later on -->
+    <!-- TODO perhaps add the ability to add a password to lobby later on -->
 </form>
 <div class="row">
     <div class="column">
@@ -16,26 +16,25 @@
                 <th>User Created</th>
                 <th>Space</th>
             </tr>
-
             {% for game in games %}
-            <tr>
-            {% if game.userNo < 2 %}
-                <td><a href="/game/{{ game.gameId }}" onclick="return confirm('are you sure?')">{{game.gameName}}</a></td> 
-            {% else %}
-                <td>{{game.gameName}}</td>
-            {% endif %}
-            {% for user in users %}
-            {% if user.game == game.gameId %}
-                {% if user.isPlayerOne == True %}
-                    <td>{{user.username}}</td>
+                <tr>
+                {% if game.userNo < 2 %}
+                    <td><a href="/game/{{ game.gameId }}" onclick="return confirm('are you sure?')">{{game.gameName}}</a></td> 
+                {% else %}
+                    <td>{{game.gameName}}</td>
                 {% endif %}
-            {% endif %}
-            {% endfor %}
-            {% if game.userNo < 2 %}
-                <td>1/2</td>
-            {% else %}
-                <td>2/2</td>
-            {% endif %}
+                {% for user in users %}
+                    {% if user.game == game.gameId %}
+                        {% if user.isPlayerOne == True %}
+                            <td>{{user.username}}</td>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                {% if game.userNo < 2 %}
+                    <td>1/2</td>
+                {% else %}
+                    <td>2/2</td>
+                {% endif %}
             {% endfor %}
             </tr>
         </table> 
@@ -48,17 +47,11 @@
                 <th>User Created</th>
                 <th>Space</th>
             </tr>
+            {% for game in games %}
             <tr>
-                {% for game in games %}
                 
-                {% if game.gameName == current_user.username %}
-                    <td>yes</td>
-                    <td>test</td>
-                    <td>test</td>
-                {% endif %}
-
-                {% endfor %}
             </tr>
+            {% endfor %}
         </table>
     </div>
 </div>
