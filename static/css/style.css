@@ -82,10 +82,10 @@ display: grid;
 grid-template-columns: repeat(36, calc(720px / 36));
 grid-template-rows: repeat(36, calc(720px / 36));
 border-right: 1px solid var(--c5);
-border-bottom: 1px solid grey;
+border-bottom: 1px solid var(--c5);
 background-size: calc(720px / 18) calc(720px / 18);
 background-image: linear-gradient(to right, var(--c5) 1px, transparent 1px),
-    linear-gradient(to bottom, grey 1px, transparent 1px);
+    linear-gradient(to bottom, var(--c5) 1px, transparent 1px);
 }
 .star {
 width: calc(100% / 4);

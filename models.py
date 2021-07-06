@@ -1,9 +1,6 @@
 '''
 CLASSES FOR DATABASE BELOW
 these tell SQLAlchemy how to take the data from Go.db and make it useable in Python
-https://github.com/aprescott/tenuki
-https://levelup.gitconnected.com/creating-a-board-game-checkers-with-javascript-ecd562f985c2
-https://levelup.gitconnected.com/how-to-make-a-go-board-with-css-ac4cba7d0b72
 http://cjlarose.com/2014/01/09/react-board-game-tutorial.html
 '''
 from main import db
