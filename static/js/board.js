@@ -80,4 +80,37 @@ Board.prototype.play = function(i, j){
     return true;
 };
 
-Board.prototype
+Board.prototype.get_adjacent_intersections = function(i, j) { // function for checking adjacent coordinates of a piece
+    var color = this.board[i][j];
+    if (color == Board.EMPTY)
+        return null;
+    
+    var visited = {};
+    var visited_list = [];
+    var queue = [[i, j]];
+    var count = 0;
+
+    while (queue.length > 0) {
+        var stone = queue.pop();
+        if (visited[stone])
+            continue;
+
+        var neighbors = this.get_adjacent_intersections(stone[0], stone[1]);
+        var self = this;
+        _.each(neighbors, function(n) {
+            var state = self.board[n[0]][n[1]];
+            if (state == board.EMPTY) // if the coordinate is not empty
+                count++; // ++ increases the value by 1
+            if (state == color) // if the coordinate has a piece on it
+                queue.push([n[0], n[1]])//
+        });
+
+        visited[stone] = true;
+        visited_list.push(stone);
+    }
+
+    return {
+        "liberties": count,
+        "stones": visited_list
+    };
+}
