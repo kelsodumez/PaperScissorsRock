@@ -1,12 +1,11 @@
 {% extends 'layout.html' %}
 {% block body %}
 <h1> {{ game.gameName }}</h1>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.1.0/react-dom.min.js"></script>
+<script src="http://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
 <div id = 'main'>
 </div>
-<script src="//cdnjs.cloudflare.com/ajax/libs/react/0.8.0/react.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/react/0.8.0/JSXTransformer.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js"></script>
 <script type="text/javascript" src="board.js"></script>
 <script type="text/jsx" src="go.js"></script>
-
-{% endblock body %}
+{% endblock body %} 

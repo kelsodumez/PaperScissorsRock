@@ -73,7 +73,7 @@ var ContainerView = React.createClass({
 
 var board = new board(19);
 
-React.renderComponent(
-    <ContainerView board = {board} />,
+ReactDOM.renderComponent(
+    <ContainerView board = {board}/>,
     document.getElementById('main')
 );
