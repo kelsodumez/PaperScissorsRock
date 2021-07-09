@@ -82,7 +82,7 @@ def createaccount():
 def lobbies():
     games=models.game.query.all()
     users=models.user_to_game.query.all()
-    current_username = current_user().username
+    current_username = current_user().username # TODO this causes bool error
     return render_template('lobbies.html', games=games, users=users, current_username=current_username, backcheck=True)
 
 @app.route('/createlobby', methods = ['GET', 'POST'])

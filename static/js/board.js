@@ -1,5 +1,6 @@
-var Board = function() {
+var Board = function(size) {
     this.current_color = board.BLACK;
+    this.size = size;
     this.board = this.create_board();
     this.last_move_passed = false;
     this.in_atari = false;
@@ -23,7 +24,7 @@ board.prototype.create_board = function(){
 // TODO add a function for switching to the second players turn
 // TODO check which player session is currently active for making turn
 
-Board.prototype.pass = function() {
+Board.prototype.pass = function(size) {
     if(this.last_move_passed)
         this.end_game();
     this.last_move_passed = true;

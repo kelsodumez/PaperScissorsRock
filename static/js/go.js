@@ -11,5 +11,69 @@ var BoardIntersection = React.createClass({
             top: this.props.row * GRID_SIZE,
             left: this.props.col * GRID_SIZE
         };
+
+        var classes = "intersection";
+        if (this.props.color != Board.EMPTY)
+            classes += this.props.color == board.BLACK ? "black" : "white";
+
+        return (
+            <div onClick={this.handleClick}
+                className = {classes} style = {style}></div>
+        )
     }
-})
+});
+
+var BoardView = React.createClass({
+    render: function() {
+        var intersections = [];
+        for (var i = 0; i < this.props.board.size; i++)
+            for (var j = 0; j < this.props.board.size; j++)
+                intersections.push(BoardIntersection({
+                    board: this.props.board,
+                    color: this.props.board.board[i][j],
+                    row: i,
+                    col: j,
+                    onPlay: this.props.onPlay
+                }));
+            var style = {
+                width: this.props.board.size * GRID_SIZE,
+                height: this.props.board.size * GRID_SIZE
+            };
+            return <div style = {style} id = "board">{intersections}</div>
+    }
+});
+
+var PassView = React.createClass({
+    handleClick: function(e) {
+        this.props.board.pass();
+    },
+    render: function() {
+        return (
+            <input id="pass-button" type="button" value="Pass"
+                onClick = {this.handleClickClick} />
+        );
+    }
+});
+
+var ContainerView = React.createClass({
+    getInitialState: function() {
+        return {'board': this.props.board};
+    },
+
+    render: function() {
+        return (
+            <div>
+                <AlertView board = {this.state.board} />
+                <PassView board = {this.state.board} />
+                <BoardView board = {this.state.board} />
+            </div>
+        )
+    }
+});
+
+var board = new board(19);
+
+React.renderComponent(
+    <ContainerView board = {board} />,
+    document.getElementById('main')
+);
