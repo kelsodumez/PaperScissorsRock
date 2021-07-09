@@ -1,7 +1,6 @@
 '''
 CLASSES FOR DATABASE BELOW
 these tell SQLAlchemy how to take the data from Go.db and make it useable in Python
-http://cjlarose.com/2014/01/09/react-board-game-tutorial.html
 '''
 from main import db
 
