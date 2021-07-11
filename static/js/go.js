@@ -1,5 +1,8 @@
 /** @jsx React.DOM */
+import React from 'react';
+import ReactDOM from 'react-dom';
 var GRID_SIZE = 40;
+
 
 var BoardIntersection = React.createClass({
     handleClick: function() {
@@ -84,13 +87,10 @@ var ContainerView = React.createClass({
                 <BoardView board = {this.state.board}
                     onPlay={this.onBoardUpdate.bind(this)} />
             </div>
-        )
+        )   
     }
 });
 
 var board = new board(19);
 
-ReactDOM.renderComponent(
-    <ContainerView board = {board}/>,
-    document.getElementById('main')
-);
+ReactDOM.render(<ContainerView board = {board}/>, document.getElementById('main'));
