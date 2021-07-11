@@ -30,16 +30,30 @@ var BoardView = React.createClass({
             for (var j = 0; j < this.props.board.size; j++)
                 intersections.push(BoardIntersection({
                     board: this.props.board,
-                    color: this.props.board.board[i][j],
+                    color: this.props.board.board[i][j],    
                     row: i,
                     col: j,
                     onPlay: this.props.onPlay
-                }));
+                }));        
             var style = {
                 width: this.props.board.size * GRID_SIZE,
                 height: this.props.board.size * GRID_SIZE
             };
             return <div style = {style} id = "board">{intersections}</div>
+    }
+});
+
+var AlertView = React.createClass({
+    render: function() {
+        var text = "";
+        if (this.props.board.in_atari)
+            text = "ATARI!";
+        else if (this.props.board.attempted_suicide)
+            text = "SUICIDE!";
+
+        return (
+            <div id="alerts">{text}</div>
+        );
     }
 });
 
@@ -50,7 +64,7 @@ var PassView = React.createClass({
     render: function() {
         return (
             <input id="pass-button" type="button" value="Pass"
-                onClick = {this.handleClickClick} />
+                onClick = {this.handleClick     } />
         );
     }
 });
@@ -59,13 +73,16 @@ var ContainerView = React.createClass({
     getInitialState: function() {
         return {'board': this.props.board};
     },
-
+    onBoardUpdate: function() {
+        this.setState({"board": this.props.board});
+    },  
     render: function() {
         return (
             <div>
                 <AlertView board = {this.state.board} />
                 <PassView board = {this.state.board} />
-                <BoardView board = {this.state.board} />
+                <BoardView board = {this.state.board}
+                    onPlay={this.onBoardUpdate.bind(this)} />
             </div>
         )
     }

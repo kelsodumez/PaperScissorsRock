@@ -79,7 +79,7 @@ def createaccount():
     return render_template('createaccount.html')
 
 @app.route('/lobbies', methods = ['GET', 'POST'])
-def lobbies():
+def lobbies():  
     games=models.game.query.all()
     users=models.user_to_game.query.all()
     current_username = current_user().username # TODO this causes bool error

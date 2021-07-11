@@ -1,7 +1,7 @@
 var Board = function(size) {
-    this.current_color = board.BLACK;
+    this.current_color = Board.BLACK;
     this.size = size;
-    this.board = this.create_board();
+    this.board = this.create_board(size);
     this.last_move_passed = false;
     this.in_atari = false;
     this.attempted_suicide = false;
@@ -11,7 +11,7 @@ board.EMPTY = 0;
 board.BLACK = 1;
 board.WHITE = 2;
 
-board.prototype.create_board = function(){
+board.prototype.create_board = function(size){
     var m = [];
     for (var i = 0; i < 18; i++) {
         m[i] = []
@@ -21,17 +21,24 @@ board.prototype.create_board = function(){
     return m;
 }
 
-// TODO add a function for switching to the second players turn
+// TODO add a function for switching to the second players turn with socketIO
 // TODO check which player session is currently active for making turn
 
-Board.prototype.pass = function(size) {
+Board.prototype.switch_player = function() {
+    this.current_color = 
+        this.current_color == Board.BLACK ? Board.WHITE : Board.BLACK;
+};
+
+Board.prototype.pass = function() {
     if(this.last_move_passed)
         this.end_game();
     this.last_move_passed = true;
+    this.switch_player();
 
 }
 
 board.prototype.end_game = function() {
+    console.log("GAME OVER");       
     // delete the data and add a win to the player that won
 };
 
@@ -77,11 +84,24 @@ Board.prototype.play = function(i, j){
         this.in_atari = true;
     
     this.last_move_passed = false;
-    // start next player turn
+    this.switch_player();           
     return true;
 };
 
-Board.prototype.get_adjacent_intersections = function(i, j) { // function for checking adjacent coordinates of a piece
+Board.prototype.get_adjacent_intersections = function(i , j) {
+    var neighbors = []; 
+    if (i > 0)
+        neighbors.push([i - 1, j]);
+    if (j < this.size - 1)
+        neighbors.push([i, j + 1]);
+    if (i < this.size - 1)
+        neighbors.push([i + 1, j]);
+    if (j > 0)
+        neighbors.push([i, j - 1]);
+    return neighbors;
+};  
+
+Board.prototype.get_group = function(i, j) { // function for checking adjacent coordinates of a piece
     var color = this.board[i][j];
     if (color == Board.EMPTY)
         return null;
