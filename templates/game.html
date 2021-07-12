@@ -1,18 +1,10 @@
 {% extends 'layout.html' %}
 {% block body %}
 <h1> {{ game.gameName }}</h1>
-<meta charset="UTF-8" />
-<body>
-    <!-- <script src="board.js"></script> -->
-    <script src="go.js"></script> <!-- React component -->
+<script src="/static/js/go.js"></script>
+<div class = "game">
+    <canvas></canvas>
+    <div class="board"></div>
+</div>
 
-    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
-
-    <p>
-        This is the third comment.
-        <!-- We will put our React component inside this div. -->
-        <div class="like_button_container" data-commentid="1"></div>
-    </p>
-</body>
 {% endblock body %} 
