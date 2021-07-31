@@ -1,0 +1,70 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@1,300&display=swap');
+
+
+:root {
+    --c1: #7b9c98;
+    --c2: #eaf1f3; 
+    --c3: #495755;
+    --c4: 'Roboto Mono';
+    --c5: #698c88;
+}
+
+.navbar {
+    background-color: var(--c3);
+}
+
+html {
+    font-family: var(--c4);
+    color: var(--c2);
+}
+
+a {
+    color: var(--c2)
+}
+
+body {
+    background-color: var(--c1);
+}
+
+.row {
+margin-left:-5px;
+margin-right:-5px;
+}
+
+.column {
+width: 25%;
+padding: 1px;
+overflow-y: auto;
+}
+
+.column:nth-child(odd){
+    float: left;
+}
+
+.column:nth-child(even){
+    float: left;
+}
+
+/* Clearfix (clear floats) */
+.row::after {
+content: "";
+clear: both;
+display: table;
+}
+
+table {
+border-collapse: collapse;
+border-spacing: 0;
+width: 25%;
+/* border: 2px solid var(--c2); */
+
+}
+
+th, td {
+text-align: left;
+padding: 16px;
+}
+
+tr:nth-child(even) {
+background-color: var(--c5);
+}

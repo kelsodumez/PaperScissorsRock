@@ -1,0 +1,10 @@
+<!-- really bad login form that should probably be a dropdown in the currently non existent navbar or something-->
+{% extends 'layout.html' %}
+{% block body %}
+<desc>{{ error }}</desc>
+<form method = 'Post' action= '/login' name = 'Login'>
+    <input type = 'text' name = 'username' placeholder = 'username'>
+    <input type = 'password' name = 'password' placeholder = 'password'>
+    <input type = 'submit' class = 'button' value = 'login'>
+</form>
+{% endblock body %}

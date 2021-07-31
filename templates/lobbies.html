@@ -1,0 +1,42 @@
+{% extends 'layout.html' %}
+{% block body %}
+{% if session.get('user') %}
+<desc>{{ error }}</desc>
+<form method='POST' name = 'createlobby' action='/createlobby'>
+    <input type = 'text' name = 'lobbyname' placeholder = 'lobby name'>
+    <input type = 'submit' class = 'button' value = 'createlobby'>
+    <!-- TODO perhaps add the ability to add a password to lobby later on -->
+</form>
+<div class="row">
+    <div class="column">
+        <table>
+            <caption>Public Lobbies</caption>
+            <tr>
+                <th>Name</th>
+                <th>User Created</th>
+                <th>Space</th>
+            </tr>
+            {% for game in games %}
+                <tr>
+                {#{% if game.userNo < 2 %}#}
+                    <td><a href="/game/{{ game.gameId }}" onclick="return confirm('are you sure?')">{{game.gameName}}</a></td> 
+                {#{% else %}
+                    <td>{{game.gameName}}</td>
+                {% endif %}#}
+                {% for user in users %}
+                    {% if user.game == game.gameId %}
+                        {% if user.isPlayerOne == True %}
+                            <td>{{user.username}}</td>
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+                <td>{{ game.users|length }}/2</td>
+            {% endfor %}
+            </tr>
+        </table> 
+    </div>
+</div>
+{% else %}
+{{'must be logged in'}}
+{% endif %}
+{% endblock body %}
