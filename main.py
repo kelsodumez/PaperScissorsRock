@@ -132,7 +132,7 @@ def game(gameId):
     #     )
     #     db.session.add(utg_info)
     #     db.session.commit() 
-    game = models.game.query.get(gameId)
+    game = models.game.query.get(gameId)    
     return render_template('game.html', game=game)
 
 @socketio.on('message')
@@ -143,17 +143,17 @@ def handleMessage(msg):
 @socketio.on('sendAction')    
 def action(data):
     print(data)
-    emit('broadcast choice', {"choice": choice}, broadcast = True) # for testing only, broadcasts 2 all users
-    
+    # emit('broadcast choice', data, broadcast = True) # for testing only, broadcasts 2 all users
+    room = data['room']
+    emit('broadcast message', data, room=room)
 
+@socketio.on('join')
+def on_join(data):
+    print(data)
+    username = current_user().username
+    room = data['room']
+    join_room(room)
 
-# @socketio.on('join')
-# def on_join(data):
-#     print(data)
-#     username = current_user().username
-#     room = data['room']
-#     join_room(room)
-#     send(username + ' has entered the room.', to = room)
 
 if __name__ == "__main__": 
     socketio.run(app, debug = True)
