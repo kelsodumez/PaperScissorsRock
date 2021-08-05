@@ -43,8 +43,7 @@ def add_current_user():
 
 @app.route('/login', methods = ['GET', 'POST']) # TODO this should be in a dropwdown eventually but for minimum viable product is fine
 def login():
-    if session.get('user'):
-        return redirect('/')
+    print(session.get('user'))
     if request.method == 'POST':
         user = models.users.query.filter(models.users.username == request.form.get('username')).first() # checks the username input against database
         if user and check_password_hash(user.password, request.form.get('password')):
@@ -81,59 +80,60 @@ def createaccount():
             db.session.commit()
     return render_template('createaccount.html')
 
-@app.route('/lobbies', methods = ['GET', 'POST'])
-def lobbies():  
-    games=models.game.query.all()
-    users=models.user_to_game.query.all()
+@app.route('/play', methods = ['GET', 'POST'])
+def play():  
+    # games=models.game.query.all()
+    users=models.users.query.all()
     current_username = current_user().username # TODO this causes bool error
-    return render_template('lobbies.html', games=games, users=users, current_username=current_username, backcheck=True)
+    return render_template('play.html', current_username=current_username, backcheck=True, users=users)#, games=games, users=users)
 
-@app.route('/createlobby', methods = ['GET', 'POST'])
-def create_lobby():
-    if request.method == 'POST':
-        if len(request.form.get('lobbyname')) > 20:
-            flash('name of lobby must be less than 20 characters')
-            return redirect('lobbies')
-        elif models.game.query.filter(models.game.gameName == request.form.get('lobbyname')).first():
-            flash('that lobby name already exists')
-            return redirect('lobbies')
-        else:
-            game_info = models.game (
-                gameName = request.form.get('lobbyname'),
-                userNo = 1
-            )
-            db.session.add(game_info)
-            db.session.commit()
-            utg_info = models.user_to_game (
-                username = current_user().username,
-                game = models.game.query.filter(models.game.gameName == request.form.get('lobbyname')).first().gameId,
-                isPlayerOne = True
-            )
-            db.session.add(utg_info)
-            db.session.commit()    
-            return redirect(f'/game/{game_info.gameId}')
+# @app.route('/createlobby', methods = ['GET', 'POST'])
+# def create_lobby():
+#     if request.method == 'POST':
+#         if len(request.form.get('lobbyname')) > 20:
+#             flash('name of lobby must be less than 20 characters')
+#             return redirect('lobbies')
+#         elif models.game.query.filter(models.game.gameName == request.form.get('lobbyname')).first():
+#             flash('that lobby name already exists')
+#             return redirect('lobbies')
+#         else:
+#             game_info = models.game (
+#                 gameName = request.form.get('lobbyname'),
+#                 userNo = 1
+#             )
+#             db.session.add(game_info)
+#             db.session.commit()
+#             utg_info = models.user_to_game (
+#                 username = current_user().username,
+#                 game = models.game.query.filter(models.game.gameName == request.form.get('lobbyname')).first().gameId,
+#                 isPlayerOne = True
+#             )
+#             db.session.add(utg_info)
+#             db.session.commit()    
+#             return redirect(f'/game/{game_info.gameId}')
 '''
 @app.route('/leaderboard')
 '''
-@app.route('/game/<int:gameId>')
-def game(gameId):
-    # increase_userNo = models.game.query.filter_by(gameId = gameId).first()    
-    # userCreated = models.user_to_game.query.filter_by(game = gameId).first()
-    # if current_user().username == userCreated.username:
-    #     return render_template('game.html', game=game)
-    # else:
-    #     # increase_userNo.userNo = increase_userNo.userNo + 1
-    #     # db.session.add(increase_userNo)
-    #     # db.session.commit()
-    #     utg_info = models.user_to_game (
-    #         username = current_user().username,
-    #         game = gameId,
-    #         isPlayerOne = False
-    #     )
-    #     db.session.add(utg_info)
-    #     db.session.commit() 
-    game = models.game.query.get(gameId)    
-    return render_template('game.html', game=game)
+
+# @app.route('/game/<int:gameId>')
+# def game(gameId):
+#     # increase_userNo = models.game.query.filter_by(gameId = gameId).first()    
+#     # userCreated = models.user_to_game.query.filter_by(game = gameId).first()
+#     # if current_user().username == userCreated.username:
+#     #     return render_template('game.html', game=game)
+#     # else:
+#     #     # increase_userNo.userNo = increase_userNo.userNo + 1
+#     #     # db.session.add(increase_userNo)
+#     #     # db.session.commit()
+#     #     utg_info = models.user_to_game (
+#     #         username = current_user().username,
+#     #         game = gameId,
+#     #         isPlayerOne = False
+#     #     )
+#     #     db.session.add(utg_info)
+#     #     db.session.commit() 
+#     # game = models.game.query.get(gameId)    
+#     return render_template('game.html', game=game)
 
 @socketio.on('message')
 def handleMessage(msg):
@@ -148,11 +148,15 @@ def action(data):
     emit('broadcast message', data, room=room)
 
 @socketio.on('join')
-def on_join(data):
-    print(data)
-    username = current_user().username
-    room = data['room']
-    join_room(room)
+def on_join():
+    # print(data)
+    print(request.sid)
+    user = models.users.query.filter(models.users.username == current_user().username).first()
+    user.sessionId = request.sid
+    db.session.commit()
+    # username = current_user().username
+    # room = data['room']
+    # join_room(room)
 
 
 if __name__ == "__main__": 
