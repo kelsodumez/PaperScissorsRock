@@ -17,11 +17,10 @@ document.getElementById('send-action').addEventListener('click', () => {
     socket.emit('sendAction', {'choice': choice, 'room': room})
 });
 
-document.getElementById('select-user-choice').addEventListener('submit', () => {
+document.getElementById('user-selection').addEventListener('click', () => {
     console.log("wowowowo")
 });
 
 socket.on('broadcast choice', data =>{
     console.log(data, "yeye")
-})
-aa
+});

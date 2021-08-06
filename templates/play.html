@@ -5,9 +5,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.3/socket.io.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <div class = "game">
-
-    <form id="select-user-choice">
-
+<!-- 
+    <form>
         <select name="users">
         {% for user in users %}
             <option value="{{user.username}}">{{user.username}}</option>
@@ -19,10 +18,9 @@
             <option value="paper">Paper</option>
         </select>
         
-        <input type="submit" value="Submit">
-    </form>
+    </form> -->
 
-    
+    <button id="user-selection">Subnit</button>
     <button id="send-action">Rock</button>
 </div>
 <script src="/static/js/psr.js"></script>

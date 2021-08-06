@@ -84,8 +84,9 @@ def createaccount():
 def play():  
     # games=models.game.query.all()
     users=models.users.query.all()
-    current_username = current_user().username # TODO this causes bool error
-    return render_template('play.html', current_username=current_username, backcheck=True, users=users)#, games=games, users=users)
+    # current_username = current_user().username # TODO this causes bool error
+    # return render_template('play.html', current_username=current_username, backcheck=True, users=users)#, games=games, users=users)
+    return render_template('play.html')
 
 # @app.route('/createlobby', methods = ['GET', 'POST'])
 # def create_lobby():
@@ -115,25 +116,25 @@ def play():
 @app.route('/leaderboard')
 '''
 
-# @app.route('/game/<int:gameId>')
-# def game(gameId):
-#     # increase_userNo = models.game.query.filter_by(gameId = gameId).first()    
-#     # userCreated = models.user_to_game.query.filter_by(game = gameId).first()
-#     # if current_user().username == userCreated.username:
-#     #     return render_template('game.html', game=game)
-#     # else:
-#     #     # increase_userNo.userNo = increase_userNo.userNo + 1
-#     #     # db.session.add(increase_userNo)
-#     #     # db.session.commit()
-#     #     utg_info = models.user_to_game (
-#     #         username = current_user().username,
-#     #         game = gameId,
-#     #         isPlayerOne = False
-#     #     )
-#     #     db.session.add(utg_info)
-#     #     db.session.commit() 
-#     # game = models.game.query.get(gameId)    
-#     return render_template('game.html', game=game)
+@app.route('/game/<int:gameId>')
+def game(gameId):
+    # increase_userNo = models.game.query.filter_by(gameId = gameId).first()    
+    # userCreated = models.user_to_game.query.filter_by(game = gameId).first()
+    # if current_user().username == userCreated.username:
+    #     return render_template('game.html', game=game)
+    # else:
+    #     # increase_userNo.userNo = increase_userNo.userNo + 1
+    #     # db.session.add(increase_userNo)
+    #     # db.session.commit()
+    #     utg_info = models.user_to_game (
+    #         username = current_user().username,
+    #         game = gameId,
+    #         isPlayerOne = False
+    #     )
+    #     db.session.add(utg_info)
+    #     db.session.commit() 
+    # game = models.game.query.get(gameId)    
+    return render_template('game.html', game=game)
 
 @socketio.on('message')
 def handleMessage(msg):
