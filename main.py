@@ -80,13 +80,13 @@ def createaccount():
             db.session.commit()
     return render_template('createaccount.html')
 
-@app.route('/play', methods = ['GET', 'POST'])
+@app.route('/play')
 def play():  
     # games=models.game.query.all()
     users=models.users.query.all()
     # current_username = current_user().username # TODO this causes bool error
     # return render_template('play.html', current_username=current_username, backcheck=True, users=users)#, games=games, users=users)
-    return render_template('play.html')
+    return render_template('play.html', users=users)
 
 # @app.route('/createlobby', methods = ['GET', 'POST'])
 # def create_lobby():

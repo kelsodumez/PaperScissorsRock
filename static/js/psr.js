@@ -6,10 +6,10 @@ window.addEventListener('load', () => {
 });
 
 
-document.querySelector('#join').addEventListener('click', () => {
-    const id = +window.location.href.split('\/').pop()
-    socket.emit('join', {'room':id})
-});
+// document.querySelector('#join').addEventListener('click', () => {
+//     const id = +window.location.href.split('\/').pop()
+//     socket.emit('join', {'room':id})
+// });
 
 document.getElementById('send-action').addEventListener('click', () => {
     const choice = "rock"
@@ -19,6 +19,8 @@ document.getElementById('send-action').addEventListener('click', () => {
 
 document.getElementById('user-selection').addEventListener('click', () => {
     console.log("wowowowo")
+    const formData = new FormData(document.querySelector('form'))
+    socket.emit('send-action',{'choice': )
 });
 
 socket.on('broadcast choice', data =>{
