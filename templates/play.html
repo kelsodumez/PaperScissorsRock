@@ -9,7 +9,9 @@
     <form>
         <select name="users">
         {% for user in users %}
-            <option value="{{user.username}}">{{user.username}}</option>
+            {% if user.username != current_username %}
+                <option value="{{user.username}}">{{user.username}}</option>
+            {% endif %}
         {% endfor %}
         </select>
         <select name="choices">
@@ -19,7 +21,7 @@
         </select>
         <button type="button" id="user-selection">Subnit</button>
     </form>
-    <button id="send-action">Rock</button>
+    <!-- <button id="send-action">Rock</button> -->
 </div>
 <script src="/static/js/psr.js"></script>
 

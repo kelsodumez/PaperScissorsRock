@@ -11,16 +11,17 @@ window.addEventListener('load', () => {
 //     socket.emit('join', {'room':id})
 // });
 
-document.getElementById('send-action').addEventListener('click', () => {
-    const choice = "rock"
-    console.log(choice)
-    socket.emit('sendAction', {'choice': choice, 'room': room})
-});
+// document.getElementById('send-action').addEventListener('click', () => {
+//     const choice = "rock"
+//     console.log(choice)
+//     socket.emit('sendAction', {'choice': choice, 'room': room})
+// });
 
 document.getElementById('user-selection').addEventListener('click', () => {
     console.log("wowowowo")
     const formData = new FormData(document.querySelector('form'))
-    socket.emit('send-action',{'choice': )
+    console.log(formData)
+    socket.emit('sendAaction', {'form_data': formData})
 });
 
 socket.on('broadcast choice', data =>{

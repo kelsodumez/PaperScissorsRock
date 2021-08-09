@@ -84,9 +84,9 @@ def createaccount():
 def play():  
     # games=models.game.query.all()
     users=models.users.query.all()
-    # current_username = current_user().username # TODO this causes bool error
+    current_username = current_user().username # TODO this causes bool error
     # return render_template('play.html', current_username=current_username, backcheck=True, users=users)#, games=games, users=users)
-    return render_template('play.html', users=users)
+    return render_template('play.html', users=users, current_username=current_username)
 
 # @app.route('/createlobby', methods = ['GET', 'POST'])
 # def create_lobby():
@@ -143,10 +143,9 @@ def handleMessage(msg):
 
 @socketio.on('sendAction')    
 def action(data):
-    print(data)
-    # emit('broadcast choice', data, broadcast = True) # for testing only, broadcasts 2 all users
-    room = data['room']
-    emit('broadcast message', data, room=room)
+    print('reached sendAction')
+    print('the data is: ', data)
+    emit('broadcast choice', data)
 
 @socketio.on('join')
 def on_join():
