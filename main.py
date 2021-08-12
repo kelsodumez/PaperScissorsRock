@@ -140,12 +140,17 @@ def game(gameId):
 def handleMessage(msg):
     print('player chose: ' + msg)
     send(msg, broadcast=True)
-
+    
 @socketio.on('sendAction')    
 def action(data):
-    print('reached sendAction')
-    print('the data is: ', data)
-    emit('broadcast choice', data)
+    print(data['form_data'][0])
+
+    user_chosen = data['form_data'][0] # these take values from the list generated in the js function and assign them to useable variables
+    move_chosen = data['form_data'][1]
+
+    # emit('broadcast choice', data, broadcast = True) # for testing only, broadcasts 2 all users
+    # room = data['room']
+    emit('broadcast choice')
 
 @socketio.on('join')
 def on_join():

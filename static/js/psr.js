@@ -20,8 +20,13 @@ window.addEventListener('load', () => {
 document.getElementById('user-selection').addEventListener('click', () => {
     console.log("wowowowo")
     const formData = new FormData(document.querySelector('form'))
-    console.log(formData)
-    socket.emit('sendAaction', {'form_data': formData})
+    data = [];
+    for (var [key, value] of formData.entries()) { 
+        console.log(key, value);
+        data.push(value);
+      }
+    console.log(data)
+    socket.emit('sendAction', {'form_data': data})
 });
 
 socket.on('broadcast choice', data =>{
