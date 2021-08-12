@@ -144,13 +144,11 @@ def handleMessage(msg):
 @socketio.on('sendAction')    
 def action(data):
     print(data['form_data'][0])
-
     user_chosen = data['form_data'][0] # these take values from the list generated in the js function and assign them to useable variables
     move_chosen = data['form_data'][1]
-
-    # emit('broadcast choice', data, broadcast = True) # for testing only, broadcasts 2 all users
-    # room = data['room']
-    emit('broadcast choice')
+    chosen_sid = models.users.query.filter_by(username = user_chosen).first()
+    # print(chosen_sid.sessionId)
+    emit('broadcast choice', move_chosen, room=chosen_sid.sessionId)
 
 @socketio.on('join')
 def on_join():
