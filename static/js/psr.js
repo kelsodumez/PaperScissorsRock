@@ -5,7 +5,6 @@ window.addEventListener('load', () => {
     socket.emit('join')
 });
 
-
 // document.querySelector('#join').addEventListener('click', () => {
 //     const id = +window.location.href.split('\/').pop()
 //     socket.emit('join', {'room':id})

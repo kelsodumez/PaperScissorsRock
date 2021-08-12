@@ -19,36 +19,36 @@ from flask_socketio import SocketIO, emit, send, join_room, leave_room
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app) # defines db as sqlalchemy connection to database
-socketio = SocketIO(app, cors_allowed_origins='*')
-from main import db
+socketio = SocketIO(app, cors_allowed_origins='*') # defines the socketIO connection
+from main import db # this is kind of weird, for some reason it fixes an issue i was having with sessions
 
-import models
+import models # imports the models from models.py
 
 @app.route('/')
 def home():
     return render_template('home.html')
 
-def current_user(): # function to create a session for user
-    if session.get("user"):
+def current_user(): # function to grab information of current user session
+    if session.get("user"): # if a user session is found return the data sorrounding that user
         return models.users.query.get(session['user'])
-    else:
+    else: # otherwise return False
         return False
 
 @app.context_processor
-def add_current_user():
+def add_current_user(): # function to create a user session
     if session.get('user'): # if there is user session
         return dict(current_user = models.users.query.get(session['user']))
     return dict(current_user = None)
 
 
-@app.route('/login', methods = ['GET', 'POST']) # TODO this should be in a dropwdown eventually but for minimum viable product is fine
+@app.route('/login', methods = ['GET', 'POST']) 
 def login():
-    print(session.get('user'))
-    if request.method == 'POST':
+    print(session.get('user')) # debug
+    if request.method == 'POST': # if POST method then the form data will be compared to whats in the db, user will be logged in if inputted data matches
         user = models.users.query.filter(models.users.username == request.form.get('username')).first() # checks the username input against database
         if user and check_password_hash(user.password, request.form.get('password')):
             session['user'] = user.userId
-            return redirect ('/')
+            return redirect ('/') # redirect to home
         else:
             return render_template('login.html', error = 'username or password incorrect')
     return render_template('login.html')
@@ -56,9 +56,9 @@ def login():
 @app.route('/logout')
 def logout():
     try:
-        session.pop('user')
-    except:
-        return redirect('login', error = 'not currently logged in')
+        session.pop('user') # removes user session
+    except: # returns an error if the user tries to type in logout route whilst not logged in
+        return redirect('login', error = 'not currently logged in') 
     return redirect('/')
 
 @app.route('/createaccount', methods = ['GET', 'POST']) 
@@ -68,7 +68,7 @@ def createaccount():
             return render_template('createaccount.html', error = 'username must be between 5 and 12 characters') # account will not be created with said username and user is prompted to input a shorter/longer username     
         elif models.users.query.filter(models.users.username == request.form.get('username')).first(): # if the username already exists in the db
             return render_template('createaccount.html', error = 'username already in use') # account will not be created and user is prompted to use a different username
-        elif len(request.form.get('password')) < 7: #
+        elif len(request.form.get('password')) < 7: # if length of inputted username is less than 7 it will not be accepted
             return render_template('createaccount.html', error = 'password must be a minimum of 7 characters') 
         else:
             user_info = models.users (
@@ -88,34 +88,10 @@ def play():
     # return render_template('play.html', current_username=current_username, backcheck=True, users=users)#, games=games, users=users)
     return render_template('play.html', users=users, current_username=current_username)
 
-# @app.route('/createlobby', methods = ['GET', 'POST'])
-# def create_lobby():
-#     if request.method == 'POST':
-#         if len(request.form.get('lobbyname')) > 20:
-#             flash('name of lobby must be less than 20 characters')
-#             return redirect('lobbies')
-#         elif models.game.query.filter(models.game.gameName == request.form.get('lobbyname')).first():
-#             flash('that lobby name already exists')
-#             return redirect('lobbies')
-#         else:
-#             game_info = models.game (
-#                 gameName = request.form.get('lobbyname'),
-#                 userNo = 1
-#             )
-#             db.session.add(game_info)
-#             db.session.commit()
-#             utg_info = models.user_to_game (
-#                 username = current_user().username,
-#                 game = models.game.query.filter(models.game.gameName == request.form.get('lobbyname')).first().gameId,
-#                 isPlayerOne = True
-#             )
-#             db.session.add(utg_info)
-#             db.session.commit()    
-#             return redirect(f'/game/{game_info.gameId}')
 '''
 @app.route('/leaderboard')
 '''
-
+'''
 @app.route('/game/<int:gameId>')
 def game(gameId):
     # increase_userNo = models.game.query.filter_by(gameId = gameId).first()    
@@ -135,7 +111,7 @@ def game(gameId):
     #     db.session.commit() 
     # game = models.game.query.get(gameId)    
     return render_template('game.html', game=game)
-
+'''
 @socketio.on('message')
 def handleMessage(msg):
     print('player chose: ' + msg)
@@ -143,12 +119,12 @@ def handleMessage(msg):
     
 @socketio.on('sendAction')    
 def action(data):
-    print(data['form_data'][0])
+    # print(data['form_data'][0]) # debug
     user_chosen = data['form_data'][0] # these take values from the list generated in the js function and assign them to useable variables
     move_chosen = data['form_data'][1]
     chosen_sid = models.users.query.filter_by(username = user_chosen).first()
-    # print(chosen_sid.sessionId)
-    emit('broadcast choice', move_chosen, room=chosen_sid.sessionId)
+    # print(chosen_sid.sessionId) # debug
+    emit('broadcast choice', move_chosen, room=chosen_sid.sessionId) # broadcasts the move chosen to the specific user, TODO change this because i need to do thing differently
 
 @socketio.on('join')
 def on_join():
@@ -160,7 +136,6 @@ def on_join():
     # username = current_user().username
     # room = data['room']
     # join_room(room)
-
 
 if __name__ == "__main__": 
     socketio.run(app, debug = True)
