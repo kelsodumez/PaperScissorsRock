@@ -25,5 +25,12 @@ class user_to_picture(db.Model):
     userId = db.Column(db.Integer, db.ForeignKey('user.userId'))
     pictureRef = db.Column(db.String, db.ForeignKey('profile_pictures.pictureRef'))
 
+class game_log(db.Model):
+    __tablename__ = 'game_log'
+    game_logId = db.Column(db.Integer, primary_key=True)
+    username1 = db.Column(db.String, db.ForeignKey('user.username'))
+    username2 = db.Column(db.String, db.ForeignKey('user.username'))
+    userWon = db.Column(db.String, db.ForeignKey('user.username'))
+
 # db.create_all(extend_existing=True)
 # db.create_all()
