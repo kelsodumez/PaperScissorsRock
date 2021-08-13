@@ -26,16 +26,16 @@ class user_to_picture(db.Model):
     pictureRef = db.Column(db.String, db.ForeignKey('profile_pictures.pictureRef'))
 
 class user_to_game(db.Model):
-    __tablename__ = 'user'
+    __tablename__ = 'user_to_game'
     user_to_gameId = db.Column(db.Integer, primary_key=True)
-    gameId = db.Column
+    gameId = db.Column(db.Integer, db.ForeignKey('game.gameId'))
 
 class game(db.Model): 
-    __tablename__ = 'game_log'
-    game_logId = db.Column(db.Integer, primary_key=True)
-    username1 = db.Column(db.String, db.ForeignKey('user.username'))
-    username2 = db.Column(db.String, db.ForeignKey('user.username'))
-    userWon = db.Column(db.String, db.ForeignKey('user.username'))
+    __tablename__ = 'game'
+    gameId = db.Column(db.Integer, primary_key=True)
+    # username1 = db.Column(db.String, db.ForeignKey('user.username'))
+    # username2 = db.Column(db.String, db.ForeignKey('user.username'))
+    # userWon = db.Column(db.String, db.ForeignKey('user.username'))
 
 # db.create_all(extend_existing=True)
 # db.create_all()
