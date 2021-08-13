@@ -8,7 +8,7 @@ git config --global user.name "kelsodumez"
 from flask import Flask, render_template, session, redirect, url_for, request, Blueprint, flash
 from random import randint, choice
 from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy import DateTime, Column, Integer
+from sqlalchemy import DateTime, Column, Integer, update
 import sqlalchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
@@ -112,25 +112,26 @@ def game(gameId):
     # game = models.game.query.get(gameId)    
     return render_template('game.html', game=game)
 '''
-@socketio.on('message')
-def handleMessage(msg):
-    print('player chose: ' + msg)
-    send(msg, broadcast=True)
     
 @socketio.on('sendAction')    
 def action(data):
-    # print(data['form_data'][0]) # debug
     user_chosen = data['form_data'][0] # these take values from the list generated in the js function and assign them to useable variables
     move_chosen = data['form_data'][1]
+    # game_info = models.game(
+    #     username1 = (models.users.query.filter_by(username = current_user().username).first()).username,
+    #     move1 = move_chosen,
+    #     username2 = (models.users.query.filter_by(username = user_chosen).first()).username,
+    # )
+    # db.session.add(game_info)
+    # db.session.commit()
     chosen_sid = models.users.query.filter_by(username = user_chosen).first()
-    # print(chosen_sid.sessionId) # debug
     emit('broadcast choice', move_chosen, room=chosen_sid.sessionId) # broadcasts the move chosen to the specific user, TODO change this because i need to do thing differently
 
 @socketio.on('join')
 def on_join():
     # print(data)
     print(request.sid)
-    user = models.users.query.filter(models.users.username == current_user().username).first()
+    user = models.users.query.filter_by(models.users.username == current_user.username).first()
     user.sessionId = request.sid
     db.session.commit()
     # username = current_user().username
