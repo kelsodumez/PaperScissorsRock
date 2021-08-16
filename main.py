@@ -131,7 +131,7 @@ def action(data):
 def on_join():
     # print(data)
     print(request.sid)
-    user = models.users.query.filter_by(models.users.username == current_user.username).first()
+    user = models.users.query.filter(models.users.username == current_user().username).first()
     user.sessionId = request.sid
     db.session.commit()
     # username = current_user().username

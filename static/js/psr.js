@@ -30,5 +30,5 @@ document.getElementById('user-selection').addEventListener('click', () => {
 
 socket.on('broadcast choice', data =>{
     console.log(data, "yeye")
-    alert(data)
+    modal.style.display = "block";
 });
