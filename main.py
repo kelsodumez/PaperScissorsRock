@@ -125,7 +125,7 @@ def action(data):
     # db.session.add(game_info)
     # db.session.commit()
     chosen_sid = models.users.query.filter_by(username = user_chosen).first()
-    emit('broadcast choice', move_chosen, room=chosen_sid.sessionId) # broadcasts the move chosen to the specific user, TODO change this because i need to do thing differently
+    emit('broadcast choice', move_chosen, room=chosen_sid.sessionId, challenger=current_user().username) # broadcasts the move chosen to the specific user, TODO change this because i need to do thing differently
 
 @socketio.on('join')
 def on_join():
