@@ -112,7 +112,15 @@ def game(gameId):
     # game = models.game.query.get(gameId)    
     return render_template('game.html', game=game)
 '''
-    
+
+
+@socketio.on('join')
+def on_join(data):
+    user_joined = data['user_joined']
+    user = models.users.query.filter(models.users.username == user_joined['user']).first()
+    user.sessionId = request.sid
+    db.session.commit()
+
 @socketio.on('sendAction')    
 def action(data):
     user_chosen = data['form_data'][0] # these take values from the list generated in the js function and assign them to useable variables
@@ -126,14 +134,14 @@ def action(data):
     # db.session.add(game_info)
     # db.session.commit()
     chosen_sid = models.users.query.filter_by(username = user_chosen).first()
-    emit('broadcast choice', move_chosen, room=chosen_sid.sessionId, challenger=user_sent['user']) # broadcasts the move chosen to the specific user, TODO change this because i need to do thing differently
+    emit('broadcast-choice', move_chosen, challenger=user_sent['user'], room=chosen_sid.sessionId) # broadcasts the move chosen to the specific user, TODO change this because i need to do thing differently
 
-@socketio.on('join')
-def on_join(data):
-    user_joined = data['user_joined']
-    user = models.users.query.filter(models.users.username == user_joined['user']).first()
-    user.sessionId = request.sid
-    db.session.commit()
+@socketio.on('sendResponse')
+def response(data):
+    user_sent = data['challenger']
+    move_chosen = data['move']
+    print('\n',user_sent,'\n',move_chosen)
+
 
 if __name__ == "__main__": 
     socketio.run(app, debug = True)

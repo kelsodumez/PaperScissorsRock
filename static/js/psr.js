@@ -24,19 +24,21 @@ document.getElementById('user-selection').addEventListener('click', () => {
     socket.emit('sendAction', {'form_data': data, 'user_sent': currentUser})
 });
 
-socket.on('broadcast choice', data =>{
+socket.on('broadcast-choice', data =>{
     console.log(data, "yeye")
-    if (challenger == null){
+    console.log(challenger, data.challenger)
+    if (challenger == undefined){
         var challenger = data.challenger
     }
-
+    console.log(challenger)
     modal.style.display = "block";
 });
 
 document.getElementById('user-response-rock').addEventListener('click', () => {
     console.log(1, challenger)
-    socket.emit('sendResponse', {'challenger': challenger})
-    console.log('debug to test if socket.emit ends the function :)')
+    socket.emit('sendResponse', {'challenger': challenger, 'move': 'rock'})
+    var challenger = null;
+    modal.style.display = "hidden";
 });
 
 document.getElementById('user-response-paper').addEventListener('click', () => {
