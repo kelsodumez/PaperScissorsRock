@@ -134,7 +134,11 @@ def action(data):
     # db.session.add(game_info)
     # db.session.commit()
     chosen_sid = models.users.query.filter_by(username = user_chosen).first()
-    emit('broadcast-choice', move_chosen, challenger=user_sent['user'], room=chosen_sid.sessionId) # broadcasts the move chosen to the specific user, TODO change this because i need to do thing differently
+    data = []
+    data.append(move_chosen)
+    data.append(user_sent)
+    print(data)
+    emit('broadcast-choice', data, room=chosen_sid.sessionId) # broadcasts the move chosen to the specific user, TODO change this because i need to do thing differently
 
 @socketio.on('sendResponse')
 def response(data):

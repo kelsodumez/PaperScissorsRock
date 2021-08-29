@@ -15,20 +15,22 @@ window.addEventListener('load', () => {
 document.getElementById('user-selection').addEventListener('click', () => {
     console.log("wowowowo")
     const formData = new FormData(document.querySelector('form'))
-    data = [];
+    form = [];
     for (var [key, value] of formData.entries()) { 
         console.log(key, value);
-        data.push(value);
+            form.push(value);
       }
-    console.log(data)
-    socket.emit('sendAction', {'form_data': data, 'user_sent': currentUser})
+    console.log(form)
+    socket.emit('sendAction', {'form_data': form, 'user_sent': currentUser})
 });
 
-socket.on('broadcast-choice', data =>{
+socket.on('broadcast-choice', function(data) {
     console.log(data, "yeye")
-    console.log(challenger, data.challenger)
+    console.log(challenger, data[1] )
     if (challenger == undefined){
-        var challenger = data.challenger
+        console.log('reached here')
+        console.log(data[1])
+        var challenger = data[1]
     }
     console.log(challenger)
     modal.style.display = "block";

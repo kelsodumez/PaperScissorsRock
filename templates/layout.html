@@ -9,7 +9,7 @@
     <meta charset="UTF-8">
     <meta name = 'viewport' content = 'width=device-width, initial scale 1.0'>
     <meta http-equiv="X-UA-Compatible" content = 'ie=edge'>
-    <title>Seki!</title>
+    <title></title>
     <link rel = 'stylesheet' href = '/static/css/style.css'>
     <!-- <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon_io/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="/static/favicon_io/favicon-32x32.png">
@@ -17,17 +17,19 @@
     <!-- <link rel="manifest" href="/site.webmanifest"> -->
 </head>
 <body>
-    <h1>Seki!</h1>
+    <h1></h1>
     <div class = 'navbar' id = 'topnav'>
         {{ nav_item('Home', '/') }}
         {{ nav_item('Play', '/play')}}
         {{ nav_item('Create Account', '/createaccount') }}
-        {% if current_user %}
-            {{('Logged in as {}'.format(current_user.username)) }}
-            {{ nav_item('Logout', '/logout') }}
-        {% else %}
-        {{ nav_item('Login', '/login') }}
-        {% endif %}
+        <lgn>
+            {% if current_user %}
+                <txt>{{('Logged in as {}'.format(current_user.username)) }}</txt>
+                {{ nav_item('Logout', '/logout') }}
+            {% else %}
+            {{ nav_item('Login', '/login') }}
+            {% endif %}
+        </lgn>
     </div>
     <div>
         {% for message in get_flashed_messages() %}
