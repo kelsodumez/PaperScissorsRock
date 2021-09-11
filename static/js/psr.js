@@ -1,11 +1,9 @@
 const socket = io.connect('http://127.0.0.1:5000');
 
 var modal = document.getElementById("myModal");
-var span = document.getElementsByClassName("close")[0];
-
+var span = document.getElementsByClassName("close")[0];z    
 var currentUser = $('#user-data').data(); // due to the way sessions work with socketio it is neccessary to send the current user from js to socketio
-
-var challenger;
+let challenger;
 
 window.addEventListener('load', () => {
     console.log("reached here") // debug
@@ -30,7 +28,7 @@ socket.on('broadcast-choice', function(data) {
     if (challenger == undefined){
         console.log('reached here')
         console.log(data[1])
-        var challenger = data[1]
+        challenger = data[1]
     }
     console.log(challenger)
     modal.style.display = "block";
@@ -38,15 +36,18 @@ socket.on('broadcast-choice', function(data) {
 
 document.getElementById('user-response-rock').addEventListener('click', () => {
     console.log(1, challenger)
-    socket.emit('sendResponse', {'challenger': challenger, 'move': 'rock'})
-    var challenger = null;
     modal.style.display = "hidden";
+    socket.emit('sendResponse', {'challenger': challenger, 'move': 'rock'})
 });
 
 document.getElementById('user-response-paper').addEventListener('click', () => {
-    console.log(2)
+    console.log(2, challenger)
+    socket.emit('sendResponse', {'challenger': challenger, 'move': 'paper'})
+    modal.style.display = "hidden";
 });
 
 document.getElementById('user-response-scissors').addEventListener('click', () => {
-    console.log(3)
+    console.log(3, challenger)
+    socket.emit('sendResponse', {'challenger': challenger, 'move': 'scissors'})
+    modal.style.display = "hidden";
 });
