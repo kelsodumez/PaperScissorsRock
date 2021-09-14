@@ -1,7 +1,7 @@
 const socket = io.connect('http://127.0.0.1:5000');
 
 var modal = document.getElementById("myModal");
-var span = document.getElementsByClassName("close")[0];z    
+var span = document.getElementsByClassName("close")[0];  
 var currentUser = $('#user-data').data(); // due to the way sessions work with socketio it is neccessary to send the current user from js to socketio
 let challenger;
 

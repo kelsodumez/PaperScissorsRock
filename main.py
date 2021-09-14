@@ -126,13 +126,14 @@ def action(data):
     user_chosen = data['form_data'][0] # these take values from the list generated in the js function and assign them to useable variables
     move_chosen = data['form_data'][1]
     user_sent = data['user_sent']
-    # game_info = models.game(
-    #     username1 = models.users.query.filter_by(username = user_sent['user']).first(),
-    #     move1 = move_chosen,
-    #     username2 = models.users.query.filter_by(username = user_chosen).first()
-    # )
-    # db.session.add(game_info)
-    # db.session.commit()
+    game_info = models.game(
+        username1 = (models.users.query.filter_by(username = user_sent['user']).first()).username,
+        move1 = move_chosen,
+        username2 = (models.users.query.filter_by(username = user_chosen).first()).username
+    )
+    db.session.add(game_info)
+    db.session.commit()
+
     chosen_sid = models.users.query.filter_by(username = user_chosen).first()
     data = []
     data.append(move_chosen)
@@ -144,8 +145,12 @@ def action(data):
 def response(data):
     user_sent = data['challenger']
     move_chosen = data['move']
-    print('\n',user_sent,'\n',move_chosen)
-
+    # game_to_add = models.game.query.filter_by(username1 = user_sent, username2 = current_user())
+    game_to_add = models.game(username1 = user_sent['user'], username2 = current_user().username, move2 = move_chosen)
+    print(game_to_add, 'aaaaa\n\n\n\naaaaaa')
+    print('\n\n', game_to_add.move2)
+    db.session.add(game_to_add)
+    db.session.commit()
 
 if __name__ == "__main__": 
     socketio.run(app, debug = True)

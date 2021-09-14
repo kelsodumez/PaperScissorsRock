@@ -39,4 +39,4 @@ class game(db.Model):
     move2 = db.Column(db.String)
 
 # db.create_all(extend_existing=True)
-# db.create_all()
+db.create_all()
