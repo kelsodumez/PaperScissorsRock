@@ -25,17 +25,18 @@ class user_to_picture(db.Model):
     userId = db.Column(db.Integer, db.ForeignKey('user.userId'))
     pictureRef = db.Column(db.String, db.ForeignKey('profile_pictures.pictureRef'))
 
-# class user_to_game(db.Model):
-#     __tablename__ = 'user_to_game'
-#     user_to_gameId = db.Column(db.Integer, primary_key=True)
-#     gameId = db.Column(db.Integer, db.ForeignKey('game.gameId'))
+class user_to_game(db.Model):
+    __tablename__ = 'user_to_game'
+    user_to_gameId = db.Column(db.Integer, primary_key=True)
+    gameId = db.Column(db.Integer, db.ForeignKey('game.gameId'))
+    username1 = db.Column(db.String, db.ForeignKey('user.username'))
+    username2 = db.Column(db.String, db.ForeignKey('user.username'))
+
 
 class game(db.Model): 
     __tablename__ = 'game'
     gameId = db.Column(db.Integer, primary_key=True)
-    username1 = db.Column(db.String, db.ForeignKey('user.username'))
     move1 = db.Column(db.String)
-    username2 = db.Column(db.String, db.ForeignKey('user.username'))
     move2 = db.Column(db.String)
 
 # db.create_all(extend_existing=True)
