@@ -156,23 +156,31 @@ def response(data):
 
     game_to_add = models.game.query.filter_by(username1 = user_sent['user'], username2 = current_user().username).first()
     if game_to_add.move1 == 'rock' and move_chosen == 'rock':
-        print('\n\n\n\n\n\n\n yeah') 
+        print('\n\n\n\n\n\n\n tie') 
 
     elif game_to_add.move1 == 'rock' and move_chosen == 'paper':
-
+        print('\n\n\n\n\n\n\n p2 win') 
+        
     elif game_to_add.move1 == 'rock' and move_chosen == 'scissors':
-
+        print('\n\n\n\n\n\n\n p1 win') 
+        
     elif game_to_add.move1 == 'paper' and move_chosen == 'paper':
+        print('\n\n\n\n\n\n\n tie') 
 
     elif game_to_add.move1 == 'paper' and move_chosen == 'rock':
+        print('\n\n\n\n\n\n\n p2 win') 
 
     elif game_to_add.move1 == 'paper' and  move_chosen == 'scissors':
-    
+        print('\n\n\n\n\n\n\n p1 win') 
+
     elif game_to_add.move1 == 'scissors' and move_chosen == 'scissors':
+        print('\n\n\n\n\n\n\n tie') 
 
     elif game_to_add.move1 == 'scissors' and move_chosen == 'paper':
+        print('\n\n\n\n\n\n\n p2 win') 
 
     elif game_to_add.move1 == 'scissors' and move_chosen == 'rock':
+        print('\n\n\n\n\n\n\n p1 win') 
 
 if __name__ == "__main__": 
     socketio.run(app, debug = True)
