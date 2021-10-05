@@ -36,18 +36,18 @@ socket.on('broadcast-choice', function(data) {
 
 document.getElementById('user-response-rock').addEventListener('click', () => {
     console.log(1, challenger)
-    modal.style.display = "hidden";
     socket.emit('sendResponse', {'challenger': challenger, 'move': 'rock'})
+    modal.style.display = "none";
 });
 
 document.getElementById('user-response-paper').addEventListener('click', () => {
     console.log(2, challenger)
     socket.emit('sendResponse', {'challenger': challenger, 'move': 'paper'})
-    modal.style.display = "hidden";
+    modal.style.display = "none";
 });
 
 document.getElementById('user-response-scissors').addEventListener('click', () => {
     console.log(3, challenger)
     socket.emit('sendResponse', {'challenger': challenger, 'move': 'scissors'})
-    modal.style.display = "hidden";
+    modal.style.display = "none";
 });
