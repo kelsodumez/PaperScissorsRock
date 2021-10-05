@@ -145,16 +145,10 @@ def action(data):
 def response(data):
     user_sent = data['challenger']
     move_chosen = data['move']
-    # # game_to_add = models.game.query.filter_by(username1 = user_sent, username2 = current_user())
-    # game_to_add = models.game(username1 = user_sent['user'], username2 = current_user().username, move2 = move_chosen)
-    # print(game_to_add, 'aaaaa\n\n\n\naaaaaa')
-    # print('\n\n', game_to_add.move2)
-    # db.session.add(game_to_add)
-    # db.session.commit()
-
-    user1 = models.users.query.filter_by(user)
-
     game_to_add = models.game.query.filter_by(username1 = user_sent['user'], username2 = current_user().username).first()
+
+
+
     if game_to_add.move1 == 'rock' and move_chosen == 'rock':
         print('\n\n\n\n\n\n\n tie') 
 
