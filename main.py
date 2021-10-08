@@ -146,18 +146,20 @@ def response(data):
     user_sent = data['challenger']
     move_chosen = data['move']
     game_to_add = models.game.query.filter_by(username1 = user_sent['user'], username2 = current_user().username).first()
-    p1 = models.users.query.filter_by(username = user_sent['user'])
-    p2 = models.users.query.filter_by(username = current_user().username)
+    p1 = models.users.query.filter_by(username = user_sent['user']).first()
+    p2 = models.users.query.filter_by(username = current_user().username).first()
 
     def p1_win():
         print('aa')
         p1.gamesWon += 1
         p2.gamesLost -= 1
+        db.session.commit()
 
     def p2_win():
         print('aa')
         p2.gamesWon += 1
         p1.gamesLost -= 1
+        db.session.commit()
 
     def tie():
         print('aa')
