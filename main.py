@@ -1,7 +1,7 @@
 '''
 Kelso du Mez
 3/05/2021 - (date when finished)
-SQLAlchemy Go Website (hopefully)
+SQLAlchemy PSR Website
 git config --global user.email "17232@burnside.school.nz" 
 git config --global user.name "kelsodumez"
 '''
@@ -26,7 +26,8 @@ import models # imports the models from models.py
 
 @app.route('/')
 def home():
-    return render_template('home.html')
+    users = models.users.query.all()
+    return render_template('home.html', users=users)
 
 def current_user(): # function to grab information of current user session
     if session.get("user"): # if a user session is found return the data sorrounding that user
@@ -88,32 +89,6 @@ def play():
     # return render_template('play.html', current_username=current_username, backcheck=True, users=users)#, games=games, users=users)
     return render_template('play.html', users=users, current_username=current_username)
 
-'''
-@app.route('/leaderboard')
-'''
-'''
-@app.route('/game/<int:gameId>')
-def game(gameId):
-    # increase_userNo = models.game.query.filter_by(gameId = gameId).first()    
-    # userCreated = models.user_to_game.query.filter_by(game = gameId).first()
-    # if current_user().username == userCreated.username:
-    #     return render_template('game.html', game=game)
-    # else:
-    #     # increase_userNo.userNo = increase_userNo.userNo + 1
-    #     # db.session.add(increase_userNo)
-    #     # db.session.commit()
-    #     utg_info = models.user_to_game (
-    #         username = current_user().username,
-    #         game = gameId,
-    #         isPlayerOne = False
-    #     )
-    #     db.session.add(utg_info)
-    #     db.session.commit() 
-    # game = models.game.query.get(gameId)    
-    return render_template('game.html', game=game)
-'''
-
-
 @socketio.on('join')
 def on_join(data):
     user_joined = data['user_joined']
@@ -150,54 +125,35 @@ def response(data):
     p2 = models.users.query.filter_by(username = current_user().username).first()
 
     def p1_win():
-        print('aa')
         p1.gamesWon += 1
-        p2.gamesLost -= 1
+        p2.gamesLost += 1
         db.session.commit()
 
     def p2_win():
-        print('aa')
         p2.gamesWon += 1
-        p1.gamesLost -= 1
+        p1.gamesLost += 1
         db.session.commit()
 
     def tie():
         print('aa')
 
     if game_to_add.move1 == 'rock' and move_chosen == 'rock':
-        print('\n\n\n\n\n\n\n tie') 
         tie()
-
     elif game_to_add.move1 == 'rock' and move_chosen == 'paper':
-        print('\n\n\n\n\n\n\n p2 win') 
         p2_win()
-
     elif game_to_add.move1 == 'rock' and move_chosen == 'scissors':
-        print('\n\n\n\n\n\n\n p1 win') 
         p1_win()
-
     elif game_to_add.move1 == 'paper' and move_chosen == 'paper':
-        print('\n\n\n\n\n\n\n tie') 
         tie()
-
     elif game_to_add.move1 == 'paper' and move_chosen == 'rock':
-        print('\n\n\n\n\n\n\n p2 win') 
         p2_win()
-
     elif game_to_add.move1 == 'paper' and  move_chosen == 'scissors':
-        print('\n\n\n\n\n\n\n p1 win') 
         p1_win()
-
     elif game_to_add.move1 == 'scissors' and move_chosen == 'scissors':
-        print('\n\n\n\n\n\n\n tie') 
         tie()
-
     elif game_to_add.move1 == 'scissors' and move_chosen == 'paper':
-        print('\n\n\n\n\n\n\n p2 win') 
         p2_win()
-
     elif game_to_add.move1 == 'scissors' and move_chosen == 'rock':
-        print('\n\n\n\n\n\n\n p1 win') 
         p1_win()
 
 if __name__ == "__main__": 
