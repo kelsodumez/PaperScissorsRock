@@ -9,6 +9,7 @@
         <th>Username</th>
         <th>Wins</th>
         <th>Losses</th>
+        <th>Win/Loss Ratio</th>
     </tr>
     {% for user in users %}   
         <tr>
@@ -16,6 +17,7 @@
             <td>{{user.username}}</td>
             <td>{{user.gamesWon}}</td>
             <td>{{user.gamesLost}}</td>
+            <td>{{user.gamesWon / user.gamesLost}}</td>
         </tr>
     {%endfor%}
 </table>
