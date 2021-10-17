@@ -4,8 +4,7 @@
 
 <table>
     <caption>Leaderboard</caption>
-    <tr>
-        <th>Position</th>
+    <tr>    
         <th>Username</th>
         <th>Wins</th>
         <th>Losses</th>
@@ -13,7 +12,6 @@
     </tr>
     {% for user in users %}   
         <tr>
-            <td></td>
             <td>{{user.username}}</td>
             <td>{{user.gamesWon}}</td>
             <td>{{user.gamesLost}}</td>

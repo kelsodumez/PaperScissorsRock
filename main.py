@@ -26,7 +26,8 @@ import models # imports the models from models.py
 
 @app.route('/')
 def home():
-    users = models.users.query.all()
+    users = (models.users.query.order_by(models.users.gamesWon.desc()).all())
+    print(users)
     return render_template('home.html', users=users)
 
 def current_user(): # function to grab information of current user session
