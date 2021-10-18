@@ -15,7 +15,11 @@
             <td>{{user.username}}</td>
             <td>{{user.gamesWon}}</td>
             <td>{{user.gamesLost}}</td>
-            <td>{{user.gamesWon / user.gamesLost}}</td>
+            {% if user.gamesWon > 0 and user.gamesLost > 0 %}
+                <td>{{user.gamesWon / user.gamesLost}}</td>
+            {% else %}
+                <td>0</td>
+            {% endif %}
         </tr>
     {%endfor%}
 </table>

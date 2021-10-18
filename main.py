@@ -86,9 +86,13 @@ def createaccount():
 def play():  
     # games=models.game.query.all()
     users=models.users.query.all()
-    current_username = current_user().username # TODO this causes bool error
-    # return render_template('play.html', current_username=current_username, backcheck=True, users=users)#, games=games, users=users)
-    return render_template('play.html', users=users, current_username=current_username)
+    if current_user():
+        current_username = current_user().username # TODO this causes bool error
+        # return render_template('play.html', current_username=current_username, backcheck=True, users=users)#, games=games, users=users)
+        return render_template('play.html', users=users, current_username=current_username)
+    else:
+        return render_template('play.html')
+
 
 @socketio.on('join')
 def on_join(data):
@@ -156,6 +160,10 @@ def response(data):
         p2_win()
     elif game_to_add.move1 == 'scissors' and move_chosen == 'rock':
         p1_win()
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html')
 
 if __name__ == "__main__": 
     socketio.run(app, debug = True)
