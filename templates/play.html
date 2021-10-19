@@ -21,14 +21,16 @@
     </div>
     
     <form>
-        <select name="users">
+        <label for="users">User to vs.</label>
+        <select name="users" id="users">
         {% for user in users %}
             {% if user.username != current_username %}
                 <option value="{{user.username}}">{{user.username}}</option>
             {% endif %}
         {% endfor %}
         </select>
-        <select name="choices">
+        <label for="choices">Choice</label>
+        <select name="choices" id="choices">
             <option value="rock">Rock</option>
             <option value="scissors">Scissors</option>
             <option value="paper">Paper</option>
