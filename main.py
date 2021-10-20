@@ -84,11 +84,9 @@ def createaccount():
 
 @app.route('/play')
 def play():  
-    # games=models.game.query.all()
     users=models.users.query.all()
     if current_user():
-        current_username = current_user().username # TODO this causes bool error
-        # return render_template('play.html', current_username=current_username, backcheck=True, users=users)#, games=games, users=users)
+        current_username = current_user().username
         return render_template('play.html', users=users, current_username=current_username)
     else:
         return render_template('play.html')
