@@ -27,7 +27,15 @@ import models # imports the models from models.py
 @app.route('/')
 def home():
     users = (models.users.query.order_by(models.users.gamesWon.desc()).all())
-    print(users)
+    length = len(users)
+    upper_split = int((length/100) * 20)
+    lower_split = int((length/100) * 70)
+
+    upper_quart = users[:(upper_split)]
+    middle_quart = users[(upper_split):(lower_split)]
+    lower_quart = users[(lower_split):]
+    print(upper_quart, middle_quart, lower_quart)
+
     return render_template('home.html', users=users)
 
 def current_user(): # function to grab information of current user session
