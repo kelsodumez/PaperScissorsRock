@@ -1,6 +1,8 @@
 const socket = io.connect('http://127.0.0.1:5000');
 
-var modal = document.getElementById("myModal");
+var response_modal = document.getElementById("responseModal");
+var win_modal = document.getElementById("winModal")
+var loss_modal = document.getElementById("lossModal")
 var span = document.getElementsByClassName("close")[0];  
 var currentUser = $('#user-data').data(); // due to the way sessions work with socketio it is neccessary to send the current user from js to socketio
 let challenger;
@@ -31,23 +33,29 @@ socket.on('broadcast-choice', function(data) {
         challenger = data[1]
     }
     console.log(challenger)
-    modal.style.display = "block";
+    response_modal.style.display = "block";
+    console.log(challenger.user)
+    document.getElementById("name").innerHTML = challenger.user;
+});
+
+socket.on('broadcast-result', function(data) {
+
 });
 
 document.getElementById('user-response-rock').addEventListener('click', () => {
     console.log(1, challenger)
     socket.emit('sendResponse', {'challenger': challenger, 'move': 'rock'})
-    modal.style.display = "none";
+    response_modal.style.display = "none";
 });
 
 document.getElementById('user-response-paper').addEventListener('click', () => {
     console.log(2, challenger)
     socket.emit('sendResponse', {'challenger': challenger, 'move': 'paper'})
-    modal.style.display = "none";
+    response_modal.style.display = "none";
 });
 
 document.getElementById('user-response-scissors').addEventListener('click', () => {
     console.log(3, challenger)
     socket.emit('sendResponse', {'challenger': challenger, 'move': 'scissors'})
-    modal.style.display = "none";
+    response_modal.style.display = "none";
 });

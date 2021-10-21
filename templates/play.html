@@ -9,9 +9,11 @@
 
     <meta id="user-data" data-user="{{current_username}}">
 
-    <div id="myModal" class="modal">
+    <div id="responseModal" class="modal">
       <!-- Modal content -->
         <div class="modal-content">
+            <h2>Game request from <span id="name"></span></h2>
+            <p>you will not recieve any requests until responding to or declining.</p>
             <button type="button" id="user-response-rock" value="rock">Rock</button>
 
             <button type="button" id="user-response-paper" value="paper">Paper</button>
@@ -20,6 +22,12 @@
         </div>
     </div>
     
+    <div id="postModal" class="modal">
+        <div class="modal-content">
+            <h1><span id="result"></span></h1>
+        </div>
+    </div>
+
     <form>
         <label for="users">User to vs.</label>
         <select name="users" id="users">

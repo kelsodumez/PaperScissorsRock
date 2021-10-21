@@ -143,10 +143,14 @@ def response(data):
         p1.gamesWon += 1
         p2.gamesLost += 1
         db.session.commit()
+        # data = win
+        emit('broadcast-result', data, room=p1.sessionId)
+        # data = loss
+        emit('broadcast-result', data, room=p2.sessionId)
 
     def p2_win():
-        p2.gamesWon += 1
         p1.gamesLost += 1
+        p2.gamesWon += 1
         db.session.commit()
 
     def tie():

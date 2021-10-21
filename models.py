@@ -33,5 +33,5 @@ class game(db.Model):
     username1 = db.Column(db.String, db.ForeignKey('user.username'))
     username2 = db.Column(db.String, db.ForeignKey('user.username'))
 
-db.create_all(extend_existing=True)
+# db.create_all(extend_existing=True)
 # db.create_all()
