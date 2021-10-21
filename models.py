@@ -23,7 +23,7 @@ class user_to_picture(db.Model):
     __tablename__ = 'user_to_picture'
     user_to_pictureId = db.Column(db.Integer, primary_key=True)
     userId = db.Column(db.Integer, db.ForeignKey('user.userId'))
-    pictureRef = db.Column(db.String, db.ForeignKey('profile_pictures.pictureRef')) 
+    pictureId = db.Column(db.Integer, db.ForeignKey('profile_pictures.pictureId')) 
 
 class game(db.Model): 
     __tablename__ = 'game'
@@ -33,5 +33,5 @@ class game(db.Model):
     username1 = db.Column(db.String, db.ForeignKey('user.username'))
     username2 = db.Column(db.String, db.ForeignKey('user.username'))
 
-# db.create_all(extend_existing=True)
+db.create_all(extend_existing=True)
 # db.create_all()

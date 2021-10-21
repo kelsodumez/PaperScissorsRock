@@ -10,6 +10,7 @@ from random import randint, choice
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import DateTime, Column, Integer, update
 import sqlalchemy
+from sqlalchemy.sql.functions import user
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from config import Config
@@ -36,6 +37,9 @@ def home():
     lower_quart = users[(lower_split):]
     print(upper_quart, middle_quart, lower_quart)
 
+    upper_users = models.user_to_picture.query.filter(models.user_to_picture.userId == upper_quart)
+    upper_users.pictureRef = 1
+    db.session.commit()
     return render_template('home.html', users=users)
 
 def current_user(): # function to grab information of current user session
