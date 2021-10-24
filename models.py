@@ -14,8 +14,8 @@ class users(db.Model):
     gamesLost = db.Column(db.Integer)
     sessionId = db.Column(db.Integer)
 
-class profile_pictures(db.Model):
-    __tablename__ = 'profile_pictures'
+class rank_pictures(db.Model):
+    __tablename__ = 'rank_pictures'
     pictureId = db.Column(db.Integer, primary_key=True)
     pictureRef = db.Column(db.String)   
 
@@ -23,7 +23,7 @@ class user_to_picture(db.Model):
     __tablename__ = 'user_to_picture'
     user_to_pictureId = db.Column(db.Integer, primary_key=True)
     userId = db.Column(db.Integer, db.ForeignKey('user.userId'))
-    pictureId = db.Column(db.Integer, db.ForeignKey('profile_pictures.pictureId')) 
+    pictureId = db.Column(db.Integer, db.ForeignKey('rank_pictures.pictureId')) 
 
 class game(db.Model): 
     __tablename__ = 'game'

@@ -50,10 +50,11 @@ def home():
         lower_user.pictureId = 3      
 
     db.session.commit()
-
-    
-
-    return render_template('home.html', users=users)
+    user_ranks = models.user_to_picture.query.all()
+    gold_image = models.rank_pictures.query.filter(models.rank_pictures.pictureId == 1).first()
+    silver_image = models.rank_pictures.query.filter(models.rank_pictures.pictureId == 2).first()
+    bronze_image = models.rank_pictures.query.filter(models.rank_pictures.pictureId == 3).first()
+    return render_template('home.html', users=users, user_ranks=user_ranks, gold_image=gold_image, silver_image=silver_image, bronze_image=bronze_image)
 
 def current_user(): # function to grab information of current user session
     if session.get("user"): # if a user session is found return the data sorrounding that user

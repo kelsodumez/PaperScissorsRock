@@ -13,7 +13,21 @@
     </tr>
     {% for user in users %}   
         <tr>
-            <td><img src="/static/ranks/silver.png" style="width:25px;height:25px"></td>
+            {% for user_rank in user_ranks %}
+                {% if user_rank.userId == user.userId %}
+                    {% if user_rank.pictureId == 1 %}
+                        {% set file_name = gold_image.pictureRef %}
+                        <td><img src="{{url_for('static', filename=file_name)}}"  file style="width:25px;height:25px"></td>
+                    {% elif user_rank.pictureId == 2 %}
+                        {% set file_name = silver_image.pictureRef %}
+                        <td><img src="{{url_for('static', filename=file_name)}}" style="width:25px;height:25px"></td>
+                    {% elif user_rank.pictureId == 3 %}
+                        {% set file_name = bronze_image.pictureRef %}
+                        <td><img src="{{url_for('static', filename=file_name)}}" style="width:25px;height:25px"></td>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+        
             <td>{{user.username}}</td>
             <td>{{user.gamesWon}}</td>
             <td>{{user.gamesLost}}</td>
