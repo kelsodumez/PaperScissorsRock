@@ -7,15 +7,15 @@ git config --global user.name "kelsodumez"
 '''
 from flask import Flask, render_template, session, redirect, url_for, request, Blueprint, flash
 from random import randint, choice
-from flask_sqlalchemy import SQLAlchemy
+from flask_sqlalchemy import SQLAlchemy, model
 from sqlalchemy import DateTime, Column, Integer, update
 import sqlalchemy
+from sqlalchemy.sql.expression import delete
 from sqlalchemy.sql.functions import user
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from config import Config
 from flask_socketio import SocketIO, emit, send, join_room, leave_room
-
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -27,7 +27,7 @@ import models # imports the models from models.py
 
 @app.route('/')
 def home():
-    users = (models.users.query.order_by(models.users.gamesWon.desc()).all())
+    users = (models.users.query.order_by(models.users.gamesWon.desc()).all()) # all users ordered by games won in descending order
     length = len(users)
     upper_split = int((length/100) * 20)
     lower_split = int((length/100) * 70)
@@ -37,9 +37,22 @@ def home():
     lower_quart = users[(lower_split):]
     print(upper_quart, middle_quart, lower_quart)
 
-    upper_users = models.user_to_picture.query.filter(models.user_to_picture.userId == upper_quart)
-    upper_users.pictureRef = 1
+    for user in upper_quart:
+        upper_user = models.user_to_picture.query.filter(models.user_to_picture.userId == user.userId).first()
+        upper_user.pictureId = 1
+
+    for user in middle_quart:
+        middle_user = models.user_to_picture.query.filter(models.user_to_picture.userId == user.userId).first()
+        middle_user.pictureId = 2
+
+    for user in lower_quart:
+        lower_user = models.user_to_picture.query.filter(models.user_to_picture.userId == user.userId).first()
+        lower_user.pictureId = 3      
+
     db.session.commit()
+
+    
+
     return render_template('home.html', users=users)
 
 def current_user(): # function to grab information of current user session
@@ -91,6 +104,13 @@ def createaccount():
                 gamesWon = 0, gamesLost = 0 
                 )
             db.session.add(user_info)
+
+            user_added = models.users.query.filter(models.users.username == request.form.get('username')).first()
+
+            utp_info = models.user_to_picture (
+                userId = user_added.userId
+                )
+            db.session.add(utp_info)
             db.session.commit()
     return render_template('createaccount.html')
 
@@ -142,15 +162,17 @@ def response(data):
     def p1_win():
         p1.gamesWon += 1
         p2.gamesLost += 1
+        delete(models.game).where(models.game == game_to_add)
         db.session.commit()
-        # data = win
+        data = "win"
         emit('broadcast-result', data, room=p1.sessionId)
-        # data = loss
+        data = "loss"
         emit('broadcast-result', data, room=p2.sessionId)
 
     def p2_win():
         p1.gamesLost += 1
         p2.gamesWon += 1
+        delete(models.game).where(models.game == game_to_add)
         db.session.commit()
 
     def tie():

@@ -17,7 +17,7 @@ class users(db.Model):
 class profile_pictures(db.Model):
     __tablename__ = 'profile_pictures'
     pictureId = db.Column(db.Integer, primary_key=True)
-    pictureRef = db.Column(db.String)
+    pictureRef = db.Column(db.String)   
 
 class user_to_picture(db.Model):
     __tablename__ = 'user_to_picture'
@@ -29,7 +29,6 @@ class game(db.Model):
     __tablename__ = 'game'
     gameId = db.Column(db.Integer, primary_key=True)
     move1 = db.Column(db.String)
-    move2 = db.Column(db.String)
     username1 = db.Column(db.String, db.ForeignKey('user.username'))
     username2 = db.Column(db.String, db.ForeignKey('user.username'))
 
