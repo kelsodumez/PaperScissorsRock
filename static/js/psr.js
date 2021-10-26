@@ -24,16 +24,16 @@ document.getElementById('user-selection').addEventListener('click', () => {
 });
 
 socket.on('broadcast-choice', function(data) {
-    console.log(data, "yeye")
+    // console.log(data, "yeye")
     console.log(challenger, data[1] )
     if (challenger == undefined){
-        console.log('reached here')
+        // console.log('reached here')
         console.log(data[1])
         challenger = data[1]
     }
-    console.log(challenger)
+    // console.log(challenger)
     response_modal.style.display = "block";
-    console.log(challenger.user)
+    // console.log(challenger.user)
     document.getElementById("name").innerHTML = challenger.user;
 });
 
@@ -55,9 +55,11 @@ document.getElementById('user-response-scissors').addEventListener('click', () =
 socket.on('broadcast-result', function(data) {
     if (data == "win") {
         document.getElementById("result").innerHTML = "Win";
+        result_modal.style.display = "block";   
     }
     else if (data == "loss") {
         document.getElementById("result").innerHTML = "Lose";
+        result_modal.style.display = "block";   
     }
-    win_modal.style.display = "block";   
+    result_modal.style.display = "block";   
 });
