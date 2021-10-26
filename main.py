@@ -35,7 +35,7 @@ def home():
     upper_quart = users[:(upper_split)]
     middle_quart = users[(upper_split):(lower_split)]
     lower_quart = users[(lower_split):]
-    print(upper_quart, middle_quart, lower_quart)
+    # print(upper_quart, middle_quart, lower_quart)
 
     for user in upper_quart:
         upper_user = models.user_to_picture.query.filter(models.user_to_picture.userId == user.userId).first()
@@ -57,6 +57,7 @@ def home():
     return render_template('home.html', users=users, user_ranks=user_ranks, gold_image=gold_image, silver_image=silver_image, bronze_image=bronze_image)
 
 def current_user(): # function to grab information of current user session
+    print(session.get("user"), models.users.query.get(session["user"]))
     if session.get("user"): # if a user session is found return the data sorrounding that user
         return models.users.query.get(session['user'])
     else: # otherwise return False
@@ -156,11 +157,12 @@ def action(data):
 def response(data):
     user_sent = data['challenger']
     move_chosen = data['move']
-    print(current_user().username) # for some reason this print statement fixes a bug caused by current_user().username in the following line, i have no idea why lol
+    print(current_user()) # for some reason this print statement fixes a bug caused by current_user().username in the following line, i have no idea why lol
     game_to_add = models.game.query.filter_by(username1 = user_sent['user'], username2 = current_user().username).first()
     p1 = models.users.query.filter_by(username = user_sent['user']).first()
     p2 = models.users.query.filter_by(username = current_user().username).first()
-
+    print(p1.sessionId, p2.sessionId)
+    
     def p1_win():
         p1.gamesWon += 1
         p2.gamesLost += 1
@@ -176,6 +178,10 @@ def response(data):
         p2.gamesWon += 1
         delete(models.game).where(models.game == game_to_add)
         db.session.commit()
+        data = "win"
+        emit('broadcast-result', data, room=p1.sessionId)
+        data = "loss"
+        emit('broadcast-result', data, room=p2.sessionId)
 
     def tie():
         print('aa')

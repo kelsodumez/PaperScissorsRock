@@ -62,4 +62,5 @@ socket.on('broadcast-result', function(data) {
         result_modal.style.display = "block";   
     }
     result_modal.style.display = "block";   
+    console.log("result_modal")
 });
