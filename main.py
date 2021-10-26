@@ -156,6 +156,7 @@ def action(data):
 def response(data):
     user_sent = data['challenger']
     move_chosen = data['move']
+    print(current_user().username) # for some reason this print statement fixes a bug caused by current_user().username in the following line, i have no idea why lol
     game_to_add = models.game.query.filter_by(username1 = user_sent['user'], username2 = current_user().username).first()
     p1 = models.users.query.filter_by(username = user_sent['user']).first()
     p2 = models.users.query.filter_by(username = current_user().username).first()
