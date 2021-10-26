@@ -5,6 +5,7 @@ var result_modal = document.getElementById("resultModal")
 var span = document.getElementsByClassName("close")[0];  
 var currentUser = $('#user-data').data(); // due to the way sessions work with socketio it is neccessary to send the current user from js to socketio
 let challenger;
+let challegend;
 
 window.addEventListener('load', () => {
     console.log("reached here") // debug
@@ -34,21 +35,23 @@ socket.on('broadcast-choice', function(data) {
     // console.log(challenger)
     response_modal.style.display = "block";
     // console.log(challenger.user)
+    challenged = data[2]
+
     document.getElementById("name").innerHTML = challenger.user;
 });
 
 document.getElementById('user-response-rock').addEventListener('click', () => {
-    socket.emit('sendResponse', {'challenger': challenger, 'move': 'rock'})
+    socket.emit('sendResponse', {'challenger': challenger, 'move': 'rock', 'challegend': challegend})
     response_modal.style.display = "none";
 });
 
 document.getElementById('user-response-paper').addEventListener('click', () => {
-    socket.emit('sendResponse', {'challenger': challenger, 'move': 'paper'})
+    socket.emit('sendResponse', {'challenger': challenger, 'move': 'paper', 'challegend': challegend})
     response_modal.style.display = "none";
 });
 
 document.getElementById('user-response-scissors').addEventListener('click', () => {
-    socket.emit('sendResponse', {'challenger': challenger, 'move': 'scissors'})
+    socket.emit('sendResponse', {'challenger': challenger, 'move': 'scissors', 'challegend': challegend})
     response_modal.style.display = "none";
 });
 

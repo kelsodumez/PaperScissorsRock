@@ -57,7 +57,6 @@ def home():
     return render_template('home.html', users=users, user_ranks=user_ranks, gold_image=gold_image, silver_image=silver_image, bronze_image=bronze_image)
 
 def current_user(): # function to grab information of current user session
-    print(session.get("user"), models.users.query.get(session["user"]))
     if session.get("user"): # if a user session is found return the data sorrounding that user
         return models.users.query.get(session['user'])
     else: # otherwise return False
@@ -150,6 +149,7 @@ def action(data):
     data = []
     data.append(move_chosen)
     data.append(user_sent)
+    data.append(user_chosen)
     print(data)
     emit('broadcast-choice', data, room=chosen_sid.sessionId) # broadcasts the move chosen to the specific user, TODO change this because i need to do thing differently
 
@@ -157,10 +157,12 @@ def action(data):
 def response(data):
     user_sent = data['challenger']
     move_chosen = data['move']
+    user_received = data['challenged']
+    print(session)
     print(current_user()) # for some reason this print statement fixes a bug caused by current_user().username in the following line, i have no idea why lol
-    game_to_add = models.game.query.filter_by(username1 = user_sent['user'], username2 = current_user().username).first()
+    game_to_add = models.game.query.filter_by(username1 = user_sent['user'], username2 = user_received['user']).first()
     p1 = models.users.query.filter_by(username = user_sent['user']).first()
-    p2 = models.users.query.filter_by(username = current_user().username).first()
+    p2 = models.users.query.filter_by(username = user_received['user']).first()
     print(p1.sessionId, p2.sessionId)
     
     def p1_win():
