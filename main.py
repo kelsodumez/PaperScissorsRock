@@ -12,6 +12,7 @@ from sqlalchemy import DateTime, Column, Integer, update
 import sqlalchemy
 from sqlalchemy.sql.expression import delete
 from sqlalchemy.sql.functions import user
+from sqlalchemy.sql.sqltypes import NullType
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from config import Config
@@ -27,7 +28,7 @@ import models # imports the models from models.py
 
 @app.route('/')
 def home():
-    users = (models.users.query.order_by(models.users.gamesWon.desc()).all()) # all users ordered by games won in descending order
+    users = models.users.query.order_by(models.users.gamesWon.desc()).all() # all users ordered by games won in descending order
     length = len(users)
     upper_split = int((length/100) * 20)
     lower_split = int((length/100) * 70)
@@ -49,11 +50,18 @@ def home():
         lower_user = models.user_to_picture.query.filter(models.user_to_picture.userId == user.userId).first()
         lower_user.pictureId = 3      
 
-    db.session.commit()
     user_ranks = models.user_to_picture.query.all()
     gold_image = models.rank_pictures.query.filter(models.rank_pictures.pictureId == 1).first()
     silver_image = models.rank_pictures.query.filter(models.rank_pictures.pictureId == 2).first()
     bronze_image = models.rank_pictures.query.filter(models.rank_pictures.pictureId == 3).first()
+
+    games = models.game.query.order_by(models.game.gameId.desc()).all()
+    dated_games = games[20:]
+    for game in dated_games:
+        if (game.move2 != None): # if a game is not still in progress, it will be deleted
+            db.session.delete(models.game.query.filter(models.game.gameId == game.gameId).first())
+    
+    db.session.commit()
     return render_template('home.html', users=users, user_ranks=user_ranks, gold_image=gold_image, silver_image=silver_image, bronze_image=bronze_image)
 
 def current_user(): # function to grab information of current user session
@@ -150,23 +158,27 @@ def action(data):
     data.append(move_chosen)
     data.append(user_sent)
     data.append(user_chosen)
+    # data.append(game_info)
     print(data)
-    emit('broadcast-choice', data, room=chosen_sid.sessionId) # broadcasts the move chosen to the specific user, TODO change this because i need to do thing differently
+    emit('broadcast-choice', data, room=chosen_sid.sessionId)
 
 @socketio.on('sendResponse')
 def response(data):
+    print('\n\ntest')
     user_sent = data['challenger']
     move_chosen = data['move']
     user_received = data['challenged']
+    # game_info = data['game_info']
     game_to_add = models.game.query.filter_by(username1 = user_sent['user'], username2 = user_received).first()
+    # game_info.move2 = move_chosen
+    db.session.commit()
+
     p1 = models.users.query.filter_by(username = user_sent['user']).first()
     p2 = models.users.query.filter_by(username = user_received).first()
-    print(p1.sessionId, p2.sessionId)
     
     def p1_win():
         p1.gamesWon += 1
         p2.gamesLost += 1
-        delete(models.game).where(models.game == game_to_add)
         db.session.commit()
         data = "win"
         emit('broadcast-result', data, room=p1.sessionId)
@@ -176,7 +188,6 @@ def response(data):
     def p2_win():
         p1.gamesLost += 1
         p2.gamesWon += 1
-        delete(models.game).where(models.game == game_to_add)
         db.session.commit()
         data = "win"
         emit('broadcast-result', data, room=p1.sessionId)

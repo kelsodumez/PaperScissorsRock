@@ -29,6 +29,7 @@ class game(db.Model):
     __tablename__ = 'game'
     gameId = db.Column(db.Integer, primary_key=True)
     move1 = db.Column(db.String)
+    move2 = db.Column(db.String)
     username1 = db.Column(db.String, db.ForeignKey('user.username'))
     username2 = db.Column(db.String, db.ForeignKey('user.username'))
 

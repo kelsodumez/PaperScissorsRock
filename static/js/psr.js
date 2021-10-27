@@ -6,6 +6,7 @@ var span = document.getElementsByClassName("close")[0];
 var currentUser = $('#user-data').data(); // due to the way sessions work with socketio it is neccessary to send the current user from js to socketio
 let challenger;
 let challenged;
+let gameinfo;
 
 window.addEventListener('load', () => {
     console.log("reached here") // debug
@@ -25,24 +26,27 @@ document.getElementById('user-selection').addEventListener('click', () => {
 });
 
 socket.on('broadcast-choice', function(data) {
-    // console.log(data, "yeye")
+    console.log(data, "yeye")
     console.log(challenger, data[1] )
     if (challenger == undefined){
         // console.log('reached here')
-        console.log(data[1])
+        console.log(data[1], ' 123')
         challenger = data[1]
     }
     challenged = data[2]
     console.log(challenged, 'aaaa')
     // console.log(challenger)
+    result_modal.style.display = 'none';
     response_modal.style.display = "block";
     // console.log(challenger.user)
 
+    // gameinfo = data[3]
+    console.log('dees')
     document.getElementById("name").innerHTML = challenger.user;
 });
 
 document.getElementById('user-response-rock').addEventListener('click', () => {
-    socket.emit('sendResponse', {'challenger': challenger, 'move': 'rock', 'challenged': challenged})
+    socket.emit('sendResponse', {'challenger': challenger, 'move': 'rock', 'challenged': challenged})//, 'game_info': gameinfo})
     response_modal.style.display = "none";
 });
 
@@ -67,7 +71,10 @@ socket.on('broadcast-result', function(data) {
         document.getElementById("result").innerHTML = "Tie";
     }
     result_modal.style.display = "block";   
-    console.log("result_modal")
 });
 
-document.getElementById
+document.getElementById("close").addEventListener("click", () => {
+    console.log("3.14159")
+    response_modal.style.display = "none";
+    result_modal.style.display = "none";
+});
