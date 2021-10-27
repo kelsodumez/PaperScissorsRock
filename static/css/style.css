@@ -74,7 +74,6 @@ background-color: var(--c5);
     display: none; /* Hidden by default */
     position: fixed; /* Stay in place */
     z-index: 1; /* Sit on top */
-    padding-top: 100px; /* Location of the box */
     left: 50%;
     top: 50%;
     width: 50%;
@@ -142,9 +141,9 @@ txt {
 }
 
 select, button, input  {
-    width: 50%;
-    padding: 12px 20px;
-    margin: 8px 0;
+    width: 85%;
+    padding: 18px 20px;
+    margin: 25px 0;
     display: inline-block;
     border: 1px solid #ccc;
     border-radius: 4px;
@@ -155,4 +154,21 @@ label {
     width: 50%;
     margin: 2px 0;
     display: inline-block;
+}
+
+#close {
+    padding-left: 97%;
+    font-size: 20px;
+    font-family: "Comic Sans MS", "Comic Sans", cursive;
+
+}
+
+form {
+    background-color: var(--c3);
+    border-radius: 6px;
+    margin-top: 5%;
+    text-align: center;
+    margin-right: 20%;
+    margin-left: 20%;
+    font-size: 20px;
 }
