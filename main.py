@@ -56,13 +56,13 @@ def home():
     bronze_image = models.rank_pictures.query.filter(models.rank_pictures.pictureId == 3).first()
 
     games = models.game.query.order_by(models.game.gameId.desc()).all()
-    dated_games = games[20:]
+    dated_games = games[10:]
     for game in dated_games:
-        if (game.move2 != None): # if a game is not still in progress, it will be deleted
-            db.session.delete(models.game.query.filter(models.game.gameId == game.gameId).first())
-    
+        # if (game.move2 != None): # if a game is not still in progress, it will be deleted
+        db.session.delete(models.game.query.filter(models.game.gameId == game.gameId).first())
     db.session.commit()
-    return render_template('home.html', users=users, user_ranks=user_ranks, gold_image=gold_image, silver_image=silver_image, bronze_image=bronze_image)
+    games = models.game.query.order_by(models.game.gameId.desc()).all()
+    return render_template('home.html', users=users, user_ranks=user_ranks, gold_image=gold_image, silver_image=silver_image, bronze_image=bronze_image, games=games)
 
 def current_user(): # function to grab information of current user session
     if session.get("user"): # if a user session is found return the data sorrounding that user
@@ -158,19 +158,18 @@ def action(data):
     data.append(move_chosen)
     data.append(user_sent)
     data.append(user_chosen)
-    # data.append(game_info)
+    data.append(game_info.gameId)
     print(data)
     emit('broadcast-choice', data, room=chosen_sid.sessionId)
 
 @socketio.on('sendResponse')
 def response(data):
-    print('\n\ntest')
     user_sent = data['challenger']
     move_chosen = data['move']
     user_received = data['challenged']
-    # game_info = data['game_info']
-    game_to_add = models.game.query.filter_by(username1 = user_sent['user'], username2 = user_received).first()
-    # game_info.move2 = move_chosen
+    game_info = data['game_info']
+    game_to_add = models.game.query.filter_by(gameId = game_info, username1 = user_sent['user'], username2 = user_received).first()
+    game_to_add.move2 = move_chosen
     db.session.commit()
 
     p1 = models.users.query.filter_by(username = user_sent['user']).first()

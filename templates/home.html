@@ -2,7 +2,7 @@
 {% block body %}
 
 
-<table>
+<table style="float:left">
     <caption>Leaderboard</caption>
     <tr>
         <th>Rank</th>    
@@ -40,6 +40,23 @@
     {%endfor%}
 </table>
 
+<table style ="float: right;">
+    <caption>Last 10 Games</caption>
+    <tr>
+        <th>User 1</th>
+        <th>Move</th>
+        <th>User 2</th>
+        <th>Move</th>
+    </tr>
+    {% for game in games %}
+    <tr>
+        <td>{{ game.username1 }}</td>
+        <td>{{ game.move1 }}</td>
+        <td>{{ game.username2 }}</td>
+        <td>{{ game.move2 }}</td>
+    </tr>
+    {%endfor%}
+</table>
 
 
 {% endblock body %}

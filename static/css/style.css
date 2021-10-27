@@ -58,7 +58,7 @@ border-spacing: 0;
 width: 25%;
 /* border: 2px solid var(--c2); */
 overflow: auto; /* Enable scroll if needed */
-
+border-width: 50%;
 }
 
 th, td {

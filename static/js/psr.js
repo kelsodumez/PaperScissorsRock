@@ -34,29 +34,29 @@ socket.on('broadcast-choice', function(data) {
         challenger = data[1]
     }
     challenged = data[2]
+    gameinfo = data[3]
     console.log(challenged, 'aaaa')
     // console.log(challenger)
     result_modal.style.display = 'none';
     response_modal.style.display = "block";
     // console.log(challenger.user)
 
-    // gameinfo = data[3]
     console.log('dees')
     document.getElementById("name").innerHTML = challenger.user;
 });
 
 document.getElementById('user-response-rock').addEventListener('click', () => {
-    socket.emit('sendResponse', {'challenger': challenger, 'move': 'rock', 'challenged': challenged})//, 'game_info': gameinfo})
+    socket.emit('sendResponse', {'challenger': challenger, 'move': 'rock', 'challenged': challenged, 'game_info': gameinfo})
     response_modal.style.display = "none";
 });
 
 document.getElementById('user-response-paper').addEventListener('click', () => {
-    socket.emit('sendResponse', {'challenger': challenger, 'move': 'paper', 'challenged': challenged})
+    socket.emit('sendResponse', {'challenger': challenger, 'move': 'paper', 'challenged': challenged, 'game_info': gameinfo})
     response_modal.style.display = "none";
 });
 
 document.getElementById('user-response-scissors').addEventListener('click', () => {
-    socket.emit('sendResponse', {'challenger': challenger, 'move': 'scissors', 'challenged': challenged})
+    socket.emit('sendResponse', {'challenger': challenger, 'move': 'scissors', 'challenged': challenged, 'game_info': gameinfo})
     response_modal.style.display = "none";
 });
 
@@ -73,8 +73,7 @@ socket.on('broadcast-result', function(data) {
     result_modal.style.display = "block";   
 });
 
-document.getElementById("close").addEventListener("click", () => {
-    console.log("3.14159")
+document.querySelectorAll("#close").forEach(element => element.addEventListener("click", () => {
     response_modal.style.display = "none";
     result_modal.style.display = "none";
-});
+}));
