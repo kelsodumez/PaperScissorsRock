@@ -158,11 +158,9 @@ def response(data):
     user_sent = data['challenger']
     move_chosen = data['move']
     user_received = data['challenged']
-    print(session)
-    print(current_user()) # for some reason this print statement fixes a bug caused by current_user().username in the following line, i have no idea why lol
-    game_to_add = models.game.query.filter_by(username1 = user_sent['user'], username2 = user_received['user']).first()
+    game_to_add = models.game.query.filter_by(username1 = user_sent['user'], username2 = user_received).first()
     p1 = models.users.query.filter_by(username = user_sent['user']).first()
-    p2 = models.users.query.filter_by(username = user_received['user']).first()
+    p2 = models.users.query.filter_by(username = user_received).first()
     print(p1.sessionId, p2.sessionId)
     
     def p1_win():
@@ -186,7 +184,9 @@ def response(data):
         emit('broadcast-result', data, room=p2.sessionId)
 
     def tie():
-        print('aa')
+        data = "tie"
+        emit('broadcast-result', data, room=p1.sessionId)
+        emit('broadcast-result', data, room=p2.sessionId)
 
     if game_to_add.move1 == 'rock' and move_chosen == 'rock':
         tie()
