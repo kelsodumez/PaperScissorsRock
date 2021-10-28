@@ -9,30 +9,32 @@
         <th>Username</th>
         <th>Wins</th>
         <th>Losses</th>
+        <th>Total</th>
         <th>WinRate</th>
     </tr>
     {% for user in users %}   
         <tr>
-            {% for user_rank in user_ranks %}
-                {% if user_rank.userId == user.userId %}
-                    {% if user_rank.pictureId == 1 %}
-                        {% set file_name = gold_image.pictureRef %}
-                        <td><img src="{{url_for('static', filename=file_name)}}"  file style="width:25px;height:25px"></td>
-                    {% elif user_rank.pictureId == 2 %}
-                        {% set file_name = silver_image.pictureRef %}
-                        <td><img src="{{url_for('static', filename=file_name)}}" style="width:25px;height:25px"></td>
-                    {% elif user_rank.pictureId == 3 %}
-                        {% set file_name = bronze_image.pictureRef %}
-                        <td><img src="{{url_for('static', filename=file_name)}}" style="width:25px;height:25px"></td>
-                    {% endif %}
-                {% endif %}
-            {% endfor %}
+            {% if user.pictureId == 1 %}
+                {% set file_name = gold_image.pictureRef %}
+                <td><img src="{{url_for('static', filename=file_name)}}"  file style="width:25px;height:25px"></td>
+
+            {% elif user.pictureId == 2 %}
+                {% set file_name = silver_image.pictureRef %}
+                <td><img src="{{url_for('static', filename=file_name)}}" style="width:25px;height:25px"></td>
+
+            {% elif user.pictureId == 3 %}
+                {% set file_name = bronze_image.pictureRef %}
+                <td><img src="{{url_for('static', filename=file_name)}}" style="width:25px;height:25px"></td>
+                
+            {% endif %}
         
             <td>{{user.username}}</td>
             <td>{{user.gamesWon}}</td>
             <td>{{user.gamesLost}}</td>
+            <td>{{user.gamesWon + user.gamesLost}}</td>
+
             {% if user.gamesWon > 0 and user.gamesLost > 0 %}
-                <td>{{((user.gamesWon + user.gamesLost)/user.gamesWon)|round(2)}}</td>
+                <td>{{(user.gamesWon/(user.gamesWon + user.gamesLost))|round(2)}}</td>
             {% else %}
                 <td>0</td>
             {% endif %}
