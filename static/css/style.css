@@ -80,7 +80,7 @@ background-color: var(--c5);
     height: 50%;
     overflow: auto; /* Enable scroll if needed */
     background-color: rgb(0,0,0); /* Fallback color */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    background-color: rgba(0,0,0,0.5); /* Black w/ opacity */
     margin: auto;
     transform: translate(-50%, -50%);
     border-radius: 6px;

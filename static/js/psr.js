@@ -18,7 +18,6 @@ document.getElementById('user-selection').addEventListener('click', () => {
     const formData = new FormData(document.querySelector('form'))
     form = [];
     for (var [key, value] of formData.entries()) { 
-        console.log(key, value);
             form.push(value);
       }
     console.log(form)
