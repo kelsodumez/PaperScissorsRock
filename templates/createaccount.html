@@ -3,8 +3,11 @@
 {% block body %}
 <desc>{{ error }}</desc>
 <form method = 'POST' action = '/createaccount' name = 'createaccount'>
-    <input type = 'text' name = 'username' placeholder = 'username'>
+    {% for field in login_form %}
+        {{ field }}
+    {% endfor %}
+    <!-- <input type = 'text' name = 'username' placeholder = 'username'>
     <input type = 'password' name = 'password' placeholder = 'password'>
-    <input type = 'submit' class = 'button' value = 'Create Account'>
+    <input type = 'submit' class = 'button' value = 'Create Account'> -->
 </form>
 {% endblock body %}
