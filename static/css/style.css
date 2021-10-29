@@ -93,6 +93,10 @@ clear: both;
 display: table;
 }
 
+p {
+    text-align: center;
+}
+
 .modal {
     display: none;
     position: fixed;

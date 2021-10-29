@@ -5,7 +5,7 @@ SQLAlchemy PSR Website
 git config --global user.email '17232@burnside.school.nz'
 git config --global user.name 'kelsodumez'
 '''
-import models  # imports the models from models.py
+
 from flask import Flask, render_template, session, redirect, url_for, request, Blueprint, flash
 from random import randint, choice
 from flask_sqlalchemy import SQLAlchemy, model
@@ -15,27 +15,26 @@ from sqlalchemy.sql.expression import delete
 from sqlalchemy.sql.functions import user
 from sqlalchemy.sql.sqltypes import NullType
 from werkzeug.security import generate_password_hash, check_password_hash
-from datetime import datetime
 from config import Config
-from flask_socketio import SocketIO, emit, send, join_room, leave_room
+from flask_socketio import SocketIO, emit
 from forms import LoginForm
-
 app = Flask(__name__)
 app.config.from_object(Config)
 db = SQLAlchemy(app)
 socketio = SocketIO(app, cors_allowed_origins='*')
 from main import db
+import models
+
 
 @app.route('/')
 def home():
-    # all users ordered by games won in descending order
     users = models.users.query.order_by(models.users.gamesWon.desc()).all()
     length = len(users)
 
     upper_split = int((length / 100) * 20)
     lower_split = int((length / 100) * 70)
 
-    upper_quart = users[:(upper_split)]
+    upper_quart = users[:(upper_split)] 
     middle_quart = users[(upper_split):(lower_split)]
     lower_quart = users[(lower_split):]
 
@@ -71,6 +70,7 @@ def home():
 
     db.session.commit()
 
+    # querying games in descending order once more to gain updated data
     games = models.game.query.order_by(models.game.gameId.desc()).all()
 
     return render_template(
@@ -100,7 +100,6 @@ def add_current_user():
 def login():
     login_form = LoginForm()
     if login_form.validate_on_submit():
-        print(login_form.login.data)
         user = models.users.query.filter(
             models.users.username == login_form.login.data).first()
         if user and check_password_hash(
@@ -132,25 +131,26 @@ def logout():
 def createaccount():
     login_form = LoginForm()
     if login_form.validate_on_submit():
-        print(login_form.login.data)
-        if 5 > len(login_form.login.data) > 12:
+        if 5 > len(login_form.login.data) or 12 < len(login_form.login.data):
             # account will not be created with said username and user is
             # prompted to input a shorter/longer username
             return render_template(
                 'createaccount.html',
-                error='username must be between 5 and 12 characters')
+                error='username must be between 5 and 12 characters',
+                login_form=login_form)
         elif models.users.query.filter(models.users.username == login_form.login.data).first():
             # account will not be created and user is prompted to use a
             # different username
             return render_template(
                 'createaccount.html',
-                error='username already in use')
+                error='username already in use', login_form=login_form)
         elif len(login_form.password.data) < 7:
             # account will not be created and user is prompted to make a
             # password of atleast 7 characters
             return render_template(
                 'createaccount.html',
-                error='password must be a minimum of 7 characters')
+                error='password must be a minimum of 7 characters',
+                login_form=login_form)
         else:
             user_info = models.users(
                 username=login_form.login.data,
@@ -188,6 +188,16 @@ def on_join(data):
     db.session.commit()
 
 
+@socketio.on('disconnect')
+def on_leave():
+    user_joined = current_user()
+    user = models.users.query.filter(
+        models.users.username == user_joined.username).first()
+    user.sessionId = None
+    db.session.commit()
+
+
+# socket event for when user sends a game request to another user
 @socketio.on('sendAction')
 def action(data):
     # these take values from the list generated in the js function and assign
@@ -195,26 +205,30 @@ def action(data):
     user_chosen = data['form_data'][0]
     move_chosen = data['form_data'][1]
     user_sent = data['user_sent']
-
-    game_info = models.game(
-        username1=(
-            models.users.query.filter_by(
-                username=user_sent['user']).first()).username, move1=move_chosen, username2=(
-            models.users.query.filter_by(
-                username=user_chosen).first()).username)
-
-    db.session.add(game_info)
-    db.session.commit()
-
     chosen_sid = models.users.query.filter_by(username=user_chosen).first()
-    data = []
-    data.append(move_chosen)
-    data.append(user_sent)
-    data.append(user_chosen)
-    data.append(game_info.gameId)
-    emit('broadcast-choice', data, room=chosen_sid.sessionId)
+    if chosen_sid.sessionId is None:
+        data = 'error'
+        emit('broadcast-result', data, room=chosen_sid.sessionId)
+
+    else:
+        game_info = models.game(
+            username1=(
+                models.users.query.filter_by(
+                    username=user_sent['user']).first()).username, move1=move_chosen, username2=(
+                models.users.query.filter_by(
+                    username=user_chosen).first()).username)
+
+        db.session.add(game_info)
+        db.session.commit()
+        data = []
+        data.append(move_chosen)
+        data.append(user_sent)
+        data.append(user_chosen)
+        data.append(game_info.gameId)
+        emit('broadcast-choice', data, room=chosen_sid.sessionId)
 
 
+# socket event for when user submits their response to sendAction
 @socketio.on('sendResponse')
 def response(data):
     user_sent = data['challenger']
@@ -225,6 +239,7 @@ def response(data):
         gameId=game_info,
         username1=user_sent['user'],
         username2=user_received).first()
+
     game_to_add.move2 = move_chosen
     db.session.commit()
 
